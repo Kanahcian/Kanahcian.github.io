@@ -1,4 +1,4 @@
-const apiBaseUrl = "http://127.0.0.1:8000";  // Render API URL: https://kanahcian-backend.onrender.com
+const apiBaseUrl = "https://kanahcian-backend.onrender.com";  // Render API URL: https://kanahcian-backend.onrender.com
 // 本機測試： http://127.0.0.1:8000
 async function fetchLocations() {
     try {
