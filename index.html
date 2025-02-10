@@ -4,108 +4,52 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>加拿家家訪地圖</title>
+
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- 自訂樣式 -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <style>
-        #map { height: 800px; width: 100%; }
-        .leaflet-control-custom {
-            background: white;
-            padding: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
 
-<h2>加拿家家訪地圖</h2>
-<q><i>我們要散步，我們要走很遠很遠的路</i></q>
+"    <!-- Logo -->
+    <!-- <div class="map-logo">
+        <img src="assets/images/logo.png" alt="品牌 Logo">
+    </div>" -->
 
-<hr />
+    <!-- 🔹 電腦版搜尋欄 -->
+    <div class="search-container">
+        <input type="text" placeholder="搜尋位置...">
+    </div>
 
-<div id="map"></div>
 
-<script>
-    // 初始化地圖，設定中心點與縮放等級
-    var map = L.map('map').setView([23.00116136899162, 121.13087331027815], 130);
+    <!-- 🔹 手機版搜尋欄 -->
+    <div class="search-container">
+        <!-- 插入圖片   -->
+        <input type="text" placeholder="搜尋位置...">
+    </div>
 
-    // **不同的地圖風格 Tile Layers**
-    var streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap 貢獻者'
-    });
+    <!-- 🔹 手機版導航 -->
+    <div class="mobile-footer">
+        <button>🏠 回家</button>
+        <button>📍 收藏</button>
+        <button>🔍 最近</button>
+    </div>
 
-    var grayscaleMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© CartoDB (Grayscale)'
-    });
+    <!-- 地圖 -->
+    <div id="map"></div>
 
-    var darkModeMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© CartoDB (Dark Mode)'
-    });
+    <!-- 🔹 定位按鈕 (固定在右下角) -->
+    <button id="locate-btn" class="locate-button">📍</button>
 
-    var satelliteMap = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap (Satellite)'
-    });
-
-    // **預設顯示街道地圖**
-    streetMap.addTo(map);
-
-    // **地圖切換控制**
-    var baseMaps = {
-        "街道圖 (Street Map)": streetMap,
-        "灰階風格 (Grayscale)": grayscaleMap,
-        "夜間模式 (Dark Mode)": darkModeMap,
-        "衛星圖 (Satellite)": satelliteMap
-    };
-
-    L.control.layers(baseMaps).addTo(map);
-
-    // **GPS 定位功能**
-    function locateUser() {
-        if (!navigator.geolocation) {
-            alert("你的瀏覽器不支援 GPS 定位功能");
-            return;
-        }
-
-        navigator.geolocation.watchPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            var accuracy = position.coords.accuracy;
-
-            // **移除舊的標記**
-            if (typeof userMarker !== "undefined") {
-                map.removeLayer(userMarker);
-                map.removeLayer(userCircle);
-            }
-
-            // **顯示使用者位置**
-            userMarker = L.marker([lat, lon]).addTo(map)
-                .bindPopup("<b>您的位置</b><br>緯度: " + lat + "<br>經度: " + lon).openPopup();
-
-            // **顯示準確範圍**
-            userCircle = L.circle([lat, lon], { radius: accuracy, color: "blue", fillOpacity: 0.3 }).addTo(map);
-
-            // **移動地圖到使用者位置**
-            map.setView([lat, lon], 15);
-
-        }, function() {
-            alert("無法獲取您的位置，請確認已開啟 GPS");
-        });
-    }
-
-    // **GPS 定位按鈕**
-    var locateButton = L.control({ position: "topright" });
-
-    locateButton.onAdd = function () {
-        var div = L.DomUtil.create("div", "leaflet-bar leaflet-control leaflet-control-custom");
-        div.innerHTML = '<button onclick="locateUser()">📍 定位</button>';
-        return div;
-    };
-
-    locateButton.addTo(map);
-
-</script>
-<script src="script.js"></script>
+    <!-- JavaScript -->
+    <script src="assets/js/map.js"></script>
+    <script src="assets/js/api.js"></script>
 
 </body>
 </html>
+
