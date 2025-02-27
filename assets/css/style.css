@@ -21,15 +21,13 @@ html, body {
 
 
 
-/* ======================== */
 /* 🔹 懸浮搜尋輸入框（類似 Google Maps） */
-/* ======================== */
 .search-container {
     position: absolute;
     top: 20px; /* 讓搜尋框靠近畫面上方 */
     left: 50%; /* 讓搜尋框在水平方向置中 */
     transform: translateX(-50%); /* 確保搜尋框真正置中 */
-    background: rgb(238, 238, 224); /* 柔和背景色 */
+    background: rgb(250, 250, 236); /* 柔和背景色 */
     padding: 12px 20px; /* 內部間距，讓搜尋框更大 */
     border-radius: 25px; /* 讓搜尋框有圓角 */
     box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* 增加陰影，讓 UI 立體 */
@@ -48,10 +46,7 @@ html, body {
     background: transparent; /* 移除背景顏色 */
 }
 
-
-/* ======================== */
 /* 🔹 手機版底部導航列 */
-/* ======================== */
 .mobile-footer {
     display: flex; /* 確保預設顯示 */
     position: fixed; /* 固定在螢幕底部 */
@@ -79,51 +74,87 @@ html, body {
 /* 🔹 定位按鈕 UI（固定在右下角） */
 .locate-button {
     position: fixed;
-    bottom: 90px; /* 距離底部的距離 */
-    right: 20px; /* 距離右邊的距離 */
+    bottom: 50px; /* 距離底部 */
+    right: 20px; /* 距離右邊 */
+    width: 60px; /* 固定寬度 */
+    height: 60px; /* 固定高度 */
     background: white;
     border: none;
-    padding: 15px 15px;
     border-radius: 30%; /* 讓按鈕變圓 */
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     font-size: 15px;
     cursor: pointer;
-    z-index: 2; /* 確保按鈕顯示在地圖上層 */
+    z-index: 2; /* 確保按鈕顯示在最上層 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .locate-button:hover {
     background: rgba(200, 200, 200, 0.9);
 }
 
-/* ======================== */
+
 /* 🔹 地圖縮放按鈕（+ / -）移動到右下角 */
-.leaflet-control-zoom {
+/* .leaflet-control-zoom {
     position: absolute !important;
     transform: scale(1.5);
-    bottom: 160px; /* 距離底部 20px */
-    right: 19px; /* 距離右側 20px */
-    z-index: 2; /* 確保顯示在最上層 */
-}
+    bottom: 160px; 
+    right: 19px; 
+    z-index: 2; } */
 
 /* 🔹 縮放按鈕的樣式 */
-.leaflet-control-zoom a {
-    background: rgb(255, 255, 255); /* 背景顏色 */
-    border-radius: 0%; /* 讓按鈕變圓 */
-    width: 180px; /* 設定按鈕大小 */
+/* .leaflet-control-zoom a {
+    background: rgb(255, 255, 255); 
+    border-radius: 0%; 
+    width: 180px; 
     height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 25px; /* 字體大小 */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    font-size: 25px; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);} */
+
+
+/* 🔹 修正地圖圖層按鈕 */
+.map-switch-button {
+    position: absolute !important; 
+    width: 60px;  /* 固定寬度 */
+    height: 60px;  /* 固定高度 */
+    bottom: 110px; /* 距離底部 */
+    right: 10px; /* 距離右邊 */
+    border-radius: 30% !important; /* 讓按鈕變圓 */
+    cursor: pointer;
+    z-index: 2; /* 確保按鈕顯示在最上層 */
+    border: none !important;  /* 移除邊框 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* 確保內容不會超出 */
+    padding: 0 !important; /* 避免內部元素影響大小 */
+    background: white; /* 確保按鈕背景顏色 */
 }
 
-/* 🔹 縮放按鈕懸停時的效果 */
-.leaflet-control-zoom a:hover {
+/* 🔹 讓展開的選單不受影響 */
+.leaflet-control-layers-expanded {
+    width: auto !important; /* 讓選單可以自適應展開 */
+    min-width: 120px !important; /* 最小寬度，避免太窄 */
+    background: white; /* 確保展開時顯示 */
+    border-radius: 10px !important; /* 讓選單圓角更美觀 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+    padding: 15px !important; /* 增加內距，讓選單內的選項不擠在一起 */
+}
+
+.map-switch-button img {
+    width: 70%; /* 讓圖片不超過按鈕 */
+    height: 70%; /* 讓圖片不超過按鈕 */
+    object-fit: contain; /* 確保圖片不變形 */
+}
+
+.map-switch-button:hover {
     background: rgba(200, 200, 200, 0.9);
 }
-
-
 
 /* ======================== */
 /* 🔹 響應式設計（適用手機版） */
@@ -147,13 +178,19 @@ html, body {
         display: flex;
     }
 
-    /* 🔹 手機不顯示地圖縮放按鈕 */
-    .leaflet-control-zoom {
-        display: none;
-    }
-
     /* 🔹 手機版定位按鈕微調 */
     .locate-button {
         transform: scale(1.2); /* 縮小按鈕 */
+        bottom: 40px; /* 調整高度 */
+        width: 50px; /* 調整寬度 */
+        height: 50px; /* 調整高度 */
+    }
+
+    /* 🔹 手機版地圖圖層按鈕微調 */
+    .map-switch-button {
+        bottom: 95px; /* 調整高度 */
+        right: 5px; /* 調整右邊距 */
+        width: 60px; /* 調整寬度 */
+        height: 60px; /* 調整高度 */
     }
 }
