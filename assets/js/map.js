@@ -1,34 +1,53 @@
 var zoomLevel = window.innerWidth < 768 ? 22 : 22;
 
-var map = L.map('map').setView([23.00116136899162, 121.13087331027815], zoomLevel, maxZoom = 22, zoomControl = true);
+// 地圖初始化（移除預設縮放按鈕）
+var map = L.map('map', {
+    zoomControl: false // 禁用預設的縮放按鈕
+}).setView([23.00116, 121.1308733], 20);
 
-// // 地圖樣式
-var streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap 貢獻者'
-}).addTo(map);
+// 定義不同模式的底圖
+var layers = [
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.{ext}', {
+        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        ext: 'png'
+    }),
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© CartoDB (Dark Mode)'
+    }),
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors © CartoDB'
+    }),
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}{r}.{ext}', {
+        minZoom: 0,
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        ext: 'png'
+    })
+];
 
-L.control.zoom({
-    position: 'bottomright' // 設定縮放控制按鈕的位置（右下角）
-}).addTo(map);
+// 設定初始底圖
+var currentLayerIndex = 0;
+layers[currentLayerIndex].addTo(map);
+
+// 新增切換地圖模式的按鈕
+var switchButton = L.control({ position: 'bottomright' });
+
+switchButton.onAdd = function(map) {
+    var button = L.DomUtil.create('button', 'map-switch-button');
+    // 插入圖片作為圖示
+    button.innerHTML = '<img src="assets/images/layers.png" class="map-switch-icon">';
+    
+    button.onclick = function() {
+        map.removeLayer(layers[currentLayerIndex]);
+        currentLayerIndex = (currentLayerIndex + 1) % layers.length;
+        map.addLayer(layers[currentLayerIndex]);
+    };
+    return button;
+};
+
+switchButton.addTo(map);
 
 
-// var grayscaleMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-//     attribution: '© CartoDB (Grayscale)'
-// });
-
-// var darkModeMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-//     attribution: '© CartoDB (Dark Mode)'
-// });
-
-
-// var baseMaps = {
-//     "街道圖": streetMap,
-//     "灰階圖": grayscaleMap,
-//     "夜間模式": darkModeMap
-// };
-
-// // 添加地圖圖層控制
-// L.control.layers(baseMaps).addTo(map);
 // 定位按鈕
 document.getElementById("locate-btn").addEventListener("click", function () {
     if (!navigator.geolocation) {
