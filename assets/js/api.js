@@ -1,4 +1,4 @@
-const apiBaseUrl = "http://127.0.0.1:8000"; // Render API URL: https://kanahcian-backend.onrender.com
+const apiBaseUrl = "https://kanahcian-backend.onrender.com"; // Render API URL: https://kanahcian-backend.onrender.com
 // 本機測試： http://127.0.0.1:8000
 
 var customIcon = L.icon({
@@ -38,10 +38,14 @@ function addMarkersToMap(locations) {
                     const locationData = {
                         id: loc.id,
                         name: loc.name || "未命名地點",
-                        visitDate: records.length > 0 ? records[0].date : "未記錄",
-                        visitor: "王小明", // 這裡應該從 API 取得真實資料
-                        notes: records.length > 0 ? records[0].description : "無訪視筆記",
-                        photos: records.map(record => record.photo) // 轉換後的照片
+                        records: records.map(record => ({
+                            recordId: record.recordId,
+                            date: record.date,
+                            visitor: "家訪小組", // 這裡應該從 API 取得真實資料
+                            semester: record.semester,
+                            description: record.description,
+                            photo: record.photo
+                        }))
                     };
 
                     if (typeof window.updateSidebarContent === 'function') {
@@ -76,7 +80,7 @@ async function fetchRecords(locationId) {
             semester: record.semester,
             date: record.date,
             description: record.description,
-            photo: record.photo ? convertGoogleDriveLink(record.photo) : null
+            photo: convertGoogleDriveLink(record.photo) // 確保照片 URL 轉換
         })) : [];
 
     } catch (error) {
@@ -86,9 +90,20 @@ async function fetchRecords(locationId) {
 }
 
 function convertGoogleDriveLink(url) {
+    if (!url) return null;
+
+    // 解析 Google Drive 連結的 FILE_ID
     const match = url.match(/file\/d\/(.*?)\//);
-    return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
+    if (match) {
+        const fileId = match[1];
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`; // 1000px 縮圖
+    }
+
+    return null;
 }
+
+
+
 
 
 // 當DOM加載完成後獲取位置

@@ -27,7 +27,7 @@ html, body {
     top: 20px; /* 讓搜尋框靠近畫面上方 */
     left: 50%; /* 讓搜尋框在水平方向置中 */
     transform: translateX(-50%); /* 確保搜尋框真正置中 */
-    background: rgb(250, 250, 236); /* 柔和背景色 */
+    background: rgb(251, 251, 248); /* 柔和背景色 */
     padding: 12px 20px; /* 內部間距，讓搜尋框更大 */
     border-radius: 25px; /* 讓搜尋框有圓角 */
     box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* 增加陰影，讓 UI 立體 */
@@ -289,6 +289,48 @@ html, body {
 
 .bottom-card-close:hover {
     color: #333;
+}
+
+/* 🔹 紀錄導覽列樣式 */
+.records-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    padding: 8px 0;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #4a8fe7;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+
+.nav-btn:hover {
+    color: #2a5db0;
+}
+
+.nav-btn:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+#record-indicator,
+#mobile-record-indicator {
+    font-size: 14px;
+    color: #666;
+    margin: 0 10px;
+}
+
+/* 新增學期標籤樣式 */
+.visit-info i.fa-book {
+    color: #e74c3c;
 }
 
 
