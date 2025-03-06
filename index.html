@@ -27,18 +27,63 @@
         <input type="text" placeholder="在這裡搜尋...">
     </div>
 
-    <!-- 🔹 手機版搜尋欄 -->
-    <div class="search-container">
-        <!-- 插入圖片   -->
-        <input type="text" placeholder="在這裡搜尋...">
+    <!-- 🔹 側邊欄 (桌面版) -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-close" id="sidebar-close">&times;</div>
+        <div class="location-details">
+            <h2 id="location-name">地點名稱</h2>
+            
+            <!-- 紀錄切換導覽列 -->
+            <div class="records-nav">
+                <button id="prev-record" class="nav-btn">&lt;</button>
+                <span id="record-indicator">紀錄 1/1</span>
+                <button id="next-record" class="nav-btn">&gt;</button>
+            </div>
+            
+            <div class="visit-info">
+                <p><i class="fas fa-calendar"></i> <span id="visit-date">訪視時間</span></p>
+                <p><i class="fas fa-user"></i> <span id="visitor-name">訪視人</span></p>
+                <p><i class="fas fa-book"></i> <span id="visit-semester">學期</span></p>
+            </div>
+            <div class="location-photos" id="location-photos">
+                <!-- 照片將由JavaScript動態添加 -->
+            </div>
+            <div class="location-notes">
+                <h3>訪視筆記</h3>
+                <p id="visit-notes">訪視筆記內容...</p>
+            </div>
+        </div>
     </div>
 
-    <!-- 🔹 手機版導航 -->
-    <!-- <div class="mobile-footer">
-        <button>🏠 回家</button>
-        <button>📍 收藏</button>
-        <button>🔍 最近</button>
-    </div> -->
+    <!-- 🔹 底部卡片 (手機版) -->
+    <div class="bottom-card" id="bottom-card">
+        <div class="drag-handle"></div>
+        <div class="bottom-card-close" id="bottom-card-close">&times;</div>
+        <div class="card-content">
+            <h2 id="mobile-location-name">地點名稱</h2>
+            
+            <!-- 紀錄切換導覽列 (手機版) -->
+            <div class="records-nav">
+                <button id="mobile-prev-record" class="nav-btn">&lt;</button>
+                <span id="mobile-record-indicator">紀錄 1/1</span>
+                <button id="mobile-next-record" class="nav-btn">&gt;</button>
+            </div>
+            
+            <div class="visit-info">
+                <p><i class="fas fa-calendar"></i> <span id="mobile-visit-date">訪視時間</span></p>
+                <p><i class="fas fa-user"></i> <span id="mobile-visitor-name">訪視人</span></p>
+                <p><i class="fas fa-book"></i> <span id="mobile-visit-semester">學期</span></p>
+            </div>
+            <div class="location-photos" id="mobile-location-photos">
+                <!-- 照片將由 JavaScript 動態添加 -->
+            </div>
+            <div class="location-notes">
+                <h3>訪視筆記</h3>
+                <p id="mobile-visit-notes">訪視筆記內容...</p>
+            </div>
+        </div>
+    </div>
+
 
     <!-- 地圖 -->
     <div id="map"></div>
@@ -46,10 +91,12 @@
     <!-- 🔹 定位按鈕 (固定在右下角) -->
     <button id="locate-btn" class="locate-button">📍</button>
 
+    
+    
     <!-- JavaScript -->
     <script src="assets/js/map.js"></script>
     <script src="assets/js/api.js"></script>
+    <script src="assets/js/sidebar.js"></script>
 
 </body>
 </html>
-
