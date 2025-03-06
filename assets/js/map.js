@@ -41,7 +41,6 @@ switchButton.onAdd = function(map) {
 
 switchButton.addTo(map);
 
-
 // 定位按鈕
 document.getElementById("locate-btn").addEventListener("click", function () {
     if (!navigator.geolocation) {

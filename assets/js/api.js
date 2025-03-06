@@ -1,4 +1,4 @@
-const apiBaseUrl = "https://kanahcian-backend.onrender.com"; // Render API URL: https://kanahcian-backend.onrender.com
+const apiBaseUrl = "http://127.0.0.1:8000"; // Render API URL: https://kanahcian-backend.onrender.com
 // 本機測試： http://127.0.0.1:8000
 
 var customIcon = L.icon({
@@ -9,7 +9,7 @@ var customIcon = L.icon({
 });
 
 
-
+// GET/location API
 async function fetchLocations() {
     try {
         const response = await fetch(`${apiBaseUrl}/api/locations`);
@@ -31,22 +31,19 @@ function addMarkersToMap(locations) {
         const lon = parseFloat(loc.longitude);
 
         if (!isNaN(lat) && !isNaN(lon)) {
-            // 使用自訂圖標
             L.marker([lat, lon], { icon: customIcon }).addTo(map)
-                .on('click', function() {
-                    // 模擬假資料，實際應用中應從API獲取
+                .on('click', async function() {
+                    const records = await fetchRecords(loc.id);  // 呼叫 fetchRecords 取得訪視紀錄
+
                     const locationData = {
-                        name: loc.name,
-                        visitDate: "2024-03-04",
-                        visitor: "王小明",
-                        notes: "這是一次訪視的詳細記錄，包含了家庭情況、學習狀態以及後續跟進計劃等信息。",
-                        photos: [
-                            "assets/images/placeholder1.jpg",
-                            "assets/images/placeholder2.jpg"
-                        ]
+                        id: loc.id,
+                        name: loc.name || "未命名地點",
+                        visitDate: records.length > 0 ? records[0].date : "未記錄",
+                        visitor: "王小明", // 這裡應該從 API 取得真實資料
+                        notes: records.length > 0 ? records[0].description : "無訪視筆記",
+                        photos: records.map(record => record.photo) // 轉換後的照片
                     };
-                    
-                    // 更新側邊欄/底部卡片內容
+
                     if (typeof window.updateSidebarContent === 'function') {
                         window.updateSidebarContent(locationData);
                     }
@@ -55,24 +52,45 @@ function addMarkersToMap(locations) {
     });
 }
 
+// POST/records API
+async function fetchRecords(locationId) {
+    try {
+        const payload = { locationid: Number(locationId) }; // 確保是數字
+        console.log("發送請求: ", payload); // 🛠️ DEBUG: 確保請求正確
+
+        const response = await fetch(`${apiBaseUrl}/api/records?locationid=${locationId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("API 回應錯誤:", errorData); // 🛠️ DEBUG: 顯示錯誤資訊
+            return [];
+        }
+
+        const data = await response.json();
+        return data.status === "success" ? data.data.map(record => ({
+            recordId: record.recordid,
+            semester: record.semester,
+            date: record.date,
+            description: record.description,
+            photo: record.photo ? convertGoogleDriveLink(record.photo) : null
+        })) : [];
+
+    } catch (error) {
+        console.error("API 請求錯誤:", error);
+        return [];
+    }
+}
+
+function convertGoogleDriveLink(url) {
+    const match = url.match(/file\/d\/(.*?)\//);
+    return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
+}
+
+
 // 當DOM加載完成後獲取位置
 document.addEventListener("DOMContentLoaded", fetchLocations);
-
-// 假設你有一個函數可以獲取某個位置的詳細信息
-// async function fetchLocationDetails(locationId) {
-//     try {
-//         const response = await fetch(`${apiBaseUrl}/api/locations/${locationId}`);
-//         const data = await response.json();
-        
-//         if (data.status === "success") {
-//             return data.data;
-//         } else {
-//             console.error("獲取地點詳情失敗", data);
-//             return null;
-//         }
-//     } catch (error) {
-//         console.error("API 請求錯誤:", error);
-//         return null;
-//     }
-// }
 

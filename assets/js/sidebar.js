@@ -4,8 +4,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const sidebar = document.getElementById("sidebar");
     const sidebarClose = document.getElementById("sidebar-close");
     const bottomCard = document.getElementById("bottom-card");
+    const bottomCardClose = document.getElementById("bottom-card-close");
     const dragHandle = document.querySelector(".drag-handle");
     const locateBtn = document.getElementById("locate-btn");
+    
     
     // 關閉側邊欄
     sidebarClose.addEventListener("click", function() {
@@ -24,22 +26,23 @@ document.addEventListener("DOMContentLoaded", function() {
     // 調整按鈕位置的函數
     function adjustButtonPositions(isCardActive) {
         if (window.innerWidth <= 1024) {
+            const mapSwitchBtn = document.querySelector(".map-switch-button");
+    
             if (isCardActive) {
-                locateBtn.classList.add("btn-position-adjust");
-                // 如果有其他按鈕，也進行調整
-                const mapSwitchBtn = document.querySelector(".map-switch-button");
+                locateBtn.style.display = "none";  // 隱藏定位按鈕
                 if (mapSwitchBtn) {
-                    mapSwitchBtn.classList.add("btn-position-adjust");
+                    mapSwitchBtn.style.display = "none"; // 隱藏地圖切換按鈕
                 }
             } else {
-                locateBtn.classList.remove("btn-position-adjust");
-                const mapSwitchBtn = document.querySelector(".map-switch-button");
+                locateBtn.style.display = "flex";  // **改為 flex 確保重新顯示**
                 if (mapSwitchBtn) {
-                    mapSwitchBtn.classList.remove("btn-position-adjust");
+                    mapSwitchBtn.style.display = "flex";
                 }
             }
         }
     }
+    
+    
     
     // 公開更新側邊欄/底部卡片內容的函數
     window.updateSidebarContent = function(locationData) {
@@ -89,5 +92,13 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             sidebar.classList.add("active");
         }
-    };
+    }
+    
+    // 點擊關閉按鈕時隱藏底部卡片
+    // 點擊關閉按鈕時隱藏底部卡片並恢復按鈕
+    bottomCardClose.addEventListener("click", function() {
+        bottomCard.classList.remove("active");
+        adjustButtonPositions(false); // 確保按鈕恢復顯示
+    });
+
 });

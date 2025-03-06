@@ -49,6 +49,7 @@
     <!-- 🔹 底部卡片 (手機版) -->
     <div class="bottom-card" id="bottom-card">
         <div class="drag-handle"></div>
+        <div class="bottom-card-close" id="bottom-card-close">&times;</div> <!-- 🔹 新增關閉按鈕 -->
         <div class="card-content">
             <h2 id="mobile-location-name">地點名稱</h2>
             <div class="visit-info">
@@ -56,7 +57,7 @@
                 <p><i class="fas fa-user"></i> <span id="mobile-visitor-name">訪視人</span></p>
             </div>
             <div class="location-photos" id="mobile-location-photos">
-                <!-- 照片將由JavaScript動態添加 -->
+                <!-- 照片將由 JavaScript 動態添加 -->
             </div>
             <div class="location-notes">
                 <h3>訪視筆記</h3>
@@ -65,12 +66,15 @@
         </div>
     </div>
 
+
     <!-- 地圖 -->
     <div id="map"></div>
 
     <!-- 🔹 定位按鈕 (固定在右下角) -->
     <button id="locate-btn" class="locate-button">📍</button>
 
+    
+    
     <!-- JavaScript -->
     <script src="assets/js/map.js"></script>
     <script src="assets/js/api.js"></script>

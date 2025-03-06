@@ -277,7 +277,6 @@ html, body {
     font-size: 18px;
 }
 
-/* 手機版底部卡片的關閉按鈕 */
 .bottom-card-close {
     position: absolute;
     top: 10px;
@@ -287,6 +286,11 @@ html, body {
     color: #666;
     z-index: 1002;
 }
+
+.bottom-card-close:hover {
+    color: #333;
+}
+
 
 /* ======================== */
 /* 🔹 響應式設計（適用手機版） */
