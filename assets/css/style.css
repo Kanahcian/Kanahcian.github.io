@@ -381,6 +381,166 @@ html, body {
 .swipe-indicators {
     margin-top: 25px !important;
 }
+
+/* 地點簡介樣式 */
+.location-brief {
+    margin: 10px 0 15px 0;
+    padding: 10px;
+    background-color: #fdfdfd;
+    border-radius: 8px;
+    border-left: 4px solid #81aade;
+}
+
+.location-brief p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.location-brief i {
+    color: #81aade;
+    margin-right: 8px;
+}
+
+/* 預設隱藏簡介區塊，由 JavaScript 根據有無內容來控制顯示 */
+#location-brief, #mobile-location-brief {
+    display: none;
+}
+
+
+.visit-info i.fa-user {
+    color: #1c8173;
+}
+
+/* 新增參與者區塊樣式 */
+.participants-section {
+    margin: 15px 0;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.participants-section h3 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.participants-section h3 i {
+    margin-right: 8px;
+    color: #4a8fe7;
+}
+
+.participants-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.participant-tag {
+    background-color: #f0f5ff;
+    border: 1px solid #d0e0ff;
+    border-radius: 15px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: #4a6997;
+    display: inline-block;
+}
+
+.students-list .participant-tag {
+    background-color: #f0f8ff;
+    border-color: #cce5ff;
+    color: #0066cc;
+}
+
+.villagers-list .participant-tag {
+    background-color: #f5fff0;
+    border-color: #d6f5c6;
+    color: #33801d;
+}
+
+.empty-list {
+    color: #888;
+    font-style: italic;
+    font-size: 14px;
+    margin: 5px 0 15px;
+}
+
+/* 改進照片顯示樣式 */
+.location-photos img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.location-photos img:hover {
+    transform: scale(1.02);
+}
+
+/* 改進筆記區域樣式 */
+.location-notes {
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+}
+
+.location-notes h3 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.location-notes h3 i {
+    margin-right: 8px;
+    color: #4a8fe7;
+}
+
+.location-notes p {
+    line-height: 1.6;
+    color: #444;
+    background-color: #fafafa;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #4a8fe7;
+}
+
+/* 改進訪視信息樣式 */
+.visit-info {
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+.visit-info p {
+    margin: 8px 0;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.visit-info i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+    color: #4a8fe7;
+}
+
+/* 改進日期和學期標籤 */
+#visit-date, #mobile-visit-date {
+    font-weight: 500;
+    color: #4a8fe7;
+}
+
+#visit-semester, #mobile-visit-semester {
+    color: #e74c3c;
+    font-weight: 500;
+}
 /* 🔹 響應式設計（適用手機版） */
 @media screen and (max-width: 1024px) {
     /* 隱藏桌面版側邊欄 */

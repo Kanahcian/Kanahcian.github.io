@@ -32,6 +32,11 @@
         <div class="sidebar-close" id="sidebar-close">&times;</div>
         <div class="location-details">
             <h2 id="location-name">地點名稱</h2>
+
+            <!-- 地點簡介 -->
+            <div class="location-brief" id="location-brief">
+                <p><i class="fas fa-bookmark"></i> <span id="brief-description">地點簡介內容...</span></p>
+            </div>
             
             <!-- 紀錄切換導覽列 -->
             <div class="records-nav">
@@ -48,8 +53,23 @@
             <div class="location-photos" id="location-photos">
                 <!-- 照片將由JavaScript動態添加 -->
             </div>
+
+            <!-- 新增參與人員區塊 -->
+            <div class="participants-section">
+                <h3><i class="fas fa-users"></i> 參與學生</h3>
+                <div id="students-container">
+                    <!-- 參與學生將由JavaScript動態添加 -->
+                </div>
+                
+                <h3><i class="fas fa-home"></i> 村民</h3>
+                <div id="villagers-container">
+                    <!-- 村民將由JavaScript動態添加 -->
+                </div>
+            </div>
+
+            <!-- 訪視筆記 -->
             <div class="location-notes">
-                <h3>訪視筆記</h3>
+                <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
                 <p id="visit-notes">訪視筆記內容...</p>
             </div>
         </div>
@@ -61,6 +81,11 @@
         <div class="bottom-card-close" id="bottom-card-close">&times;</div>
         <div class="card-content">
             <h2 id="mobile-location-name">地點名稱</h2>
+
+             <!-- 地點簡介 (手機版) -->
+             <div class="location-brief" id="mobile-location-brief">
+                <p><i class="fas fa-bookmark"></i> <span id="mobile-brief-description">地點簡介內容...</span></p>
+            </div>
             
             <!-- 紀錄切換導覽列 (手機版) -->
             <div class="records-nav">
@@ -77,8 +102,22 @@
             <div class="location-photos" id="mobile-location-photos">
                 <!-- 照片將由 JavaScript 動態添加 -->
             </div>
+
+            <!-- 新增參與人員區塊 (手機版) -->
+            <div class="participants-section">
+                <h3><i class="fas fa-users"></i> 參與學生</h3>
+                <div id="mobile-students-container">
+                    <!-- 參與學生將由JavaScript動態添加 -->
+                </div>
+                
+                <h3><i class="fas fa-home"></i> 村民</h3>
+                <div id="mobile-villagers-container">
+                    <!-- 村民將由JavaScript動態添加 -->
+                </div>
+            </div>
+            
             <div class="location-notes">
-                <h3>訪視筆記</h3>
+                <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
                 <p id="mobile-visit-notes">訪視筆記內容...</p>
             </div>
         </div>

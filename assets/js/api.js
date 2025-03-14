@@ -1,11 +1,11 @@
-const apiBaseUrl = "http://127.0.0.1:8000"; // Render API URL: https://kanahcian-backend.onrender.com
+const apiBaseUrl = "http://127.0.0.1:8000";
 // 本機測試： http://127.0.0.1:8000
-
+// 部署到 Render： https://kanahcian-backend.onrender.com
 var customIcon = L.icon({
-    iconUrl: 'assets/images/pin.png', // 替換成你的圖標路徑
-    iconSize: [35, 35], // 設定圖標大小 (寬, 高)
-    iconAnchor: [16, 40], // 設定圖標的錨點 (讓圖標尖端對準座標)
-    popupAnchor: [0, -40] // 設定彈出視窗的位置
+    iconUrl: 'assets/images/pin.png',
+    iconSize: [35, 35],
+    iconAnchor: [16, 40],
+    popupAnchor: [0, -40]
 });
 
 
@@ -38,13 +38,16 @@ function addMarkersToMap(locations) {
                     const locationData = {
                         id: loc.id,
                         name: loc.name || "未命名地點",
+                        brief_description: loc.brief_description || "",
                         records: records.map(record => ({
-                            recordId: record.recordId,
-                            date: record.date,
-                            visitor: "家訪小組", // 這裡應該從 API 取得真實資料
+                            recordId: record.recordid,
+                            date: formatDate(record.date),
+                            visitor: record.account || "家訪小組",
                             semester: record.semester,
-                            description: record.description,
-                            photo: record.photo
+                            description: record.description || "無訪視筆記",
+                            photo: convertGoogleDriveLink(record.photo),
+                            students: record.students || [],
+                            villagers: record.villagers || []
                         }))
                     };
 
@@ -56,33 +59,87 @@ function addMarkersToMap(locations) {
     });
 }
 
+// 日期格式化函數
+function formatDate(dateString) {
+    if (!dateString) return "未記錄";
+    
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return dateString; // 如果日期無效，返回原始字符串
+        
+        return date.toLocaleDateString('zh-TW', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    } catch (error) {
+        console.error("日期格式化錯誤:", error);
+        return dateString;
+    }
+}
+
 // POST/records API
 async function fetchRecords(locationId) {
     try {
-        const payload = { locationid: Number(locationId) }; // 確保是數字
-        console.log("發送請求: ", payload); // 🛠️ DEBUG: 確保請求正確
-
-        const response = await fetch(`${apiBaseUrl}/api/records?locationid=${locationId}`, {
+        // 嘗試方法1：作為查詢參數發送
+        let apiUrl = `${apiBaseUrl}/api/records?locationid=${locationId}`;
+        console.log("嘗試使用查詢參數請求:", apiUrl);
+        
+        let response = await fetch(apiUrl, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            headers: {
+                "Content-Type": "application/json"
+            }
         });
-
+        
+        // 如果第一種方法失敗，嘗試方法2：作為請求體發送
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error("API 回應錯誤:", errorData); // 🛠️ DEBUG: 顯示錯誤資訊
+            const payload = { locationid: Number(locationId) };
+            console.log("嘗試使用請求體發送:", payload);
+            
+            response = await fetch(`${apiBaseUrl}/api/records`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+        }
+        
+        console.log("回應狀態:", response.status, response.statusText);
+        
+        // 如果仍然失敗，記錄錯誤並返回空數組
+        if (!response.ok) {
+            let errorText = "";
+            try {
+                const errorData = await response.json();
+                errorText = JSON.stringify(errorData);
+            } catch (e) {
+                errorText = await response.text();
+            }
+            console.error("API 回應錯誤:", errorText);
             return [];
         }
 
         const data = await response.json();
-        return data.status === "success" ? data.data.map(record => ({
-            recordId: record.recordid,
-            semester: record.semester,
-            date: record.date,
-            description: record.description,
-            photo: convertGoogleDriveLink(record.photo) // 確保照片 URL 轉換
-        })) : [];
-
+        console.log("API 回應資料:", data);
+        
+        // 直接返回格式化後的資料
+        if (data.status === "success" && Array.isArray(data.data)) {
+            return data.data.map(record => ({
+                recordId: record.recordid,
+                semester: record.semester,
+                date: record.date,
+                description: record.description || "無訪視筆記",
+                photo: convertGoogleDriveLink(record.photo),
+                account: record.account,
+                students: record.students || [],
+                villagers: record.villagers || []
+            }));
+        } else {
+            console.error("API 回應格式不符預期:", data);
+            return [];
+        }
     } catch (error) {
         console.error("API 請求錯誤:", error);
         return [];
@@ -93,18 +150,14 @@ function convertGoogleDriveLink(url) {
     if (!url) return null;
 
     // 解析 Google Drive 連結的 FILE_ID
-    const match = url.match(/file\/d\/(.*?)\//);
+    const match = url.match(/file\/d\/(.*?)(\/|$)/);
     if (match) {
         const fileId = match[1];
         return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`; // 1000px 縮圖
     }
 
-    return null;
+    return url; // 如果無法解析，返回原始URL
 }
-
-
-
-
 
 // 當DOM加載完成後獲取位置
 document.addEventListener("DOMContentLoaded", fetchLocations);
