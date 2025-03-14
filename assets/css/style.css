@@ -1,15 +1,11 @@
-/* ======================== */
 /* 🔹 全局樣式 */
-/* ======================== */
 html, body {
     height: 100%;  /* 讓整個頁面填滿螢幕 */
     margin: 0;  /* 移除預設邊距 */
     font-family: 'Arial', sans-serif;  /* 設定全局字體 */
 }
 
-/* ======================== */
 /* 🔹 地圖滿版 */
-/* ======================== */
 #map {
     position: absolute;
     top: 0;
@@ -18,8 +14,6 @@ html, body {
     height: 100%;
     z-index: 1;  /* 確保地圖不會被其他 UI 蓋住 */
 }
-
-
 
 /* 🔹 懸浮搜尋輸入框（類似 Google Maps） */
 .search-container {
@@ -94,7 +88,6 @@ html, body {
     background: rgba(200, 200, 200, 0.9);
 }
 
-
 /* 🔹 地圖縮放按鈕（+ / -）移動到右下角 */
 /* .leaflet-control-zoom {
     position: absolute !important;
@@ -114,7 +107,6 @@ html, body {
     justify-content: center;
     font-size: 25px; 
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);} */
-
 
 /* 🔹 修正地圖圖層按鈕 */
 .map-switch-button {
@@ -156,9 +148,7 @@ html, body {
     background: rgba(200, 200, 200, 0.9);
 }
 
-/* ======================== */
 /* 🔹 側邊欄樣式 (桌面版) */
-/* ======================== */
 .sidebar {
     position: absolute;
     left: -400px; /* 初始隱藏在畫面外 */
@@ -238,9 +228,7 @@ html, body {
     color: #666;
 }
 
-/* ======================== */
 /* 🔹 底部卡片樣式 (手機版) */
-/* ======================== */
 .bottom-card {
     position: fixed;
     bottom: -100%;  /* 初始隱藏在畫面外 */
@@ -321,11 +309,17 @@ html, body {
     cursor: not-allowed;
 }
 
-#record-indicator,
-#mobile-record-indicator {
+/* 紀錄指示器 - 絕對定位使其完美置中 */
+#mobile-record-indicator, 
+#record-indicator {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    margin: 0;
+    z-index: 2;
     font-size: 14px;
     color: #666;
-    margin: 0 10px;
 }
 
 /* 新增學期標籤樣式 */
@@ -333,10 +327,61 @@ html, body {
     color: #e74c3c;
 }
 
+/* 確保底部卡片有適當的觸摸處理 */
+.bottom-card {
+    touch-action: pan-y; /* 允許垂直滾動但捕獲水平滑動 */
+}
 
-/* ======================== */
+/* 確保卡片內容可以被滑動 */
+.card-content {
+    touch-action: pan-y;
+    position: relative;
+    z-index: 1;
+}
+
+/* 防止滑動時觸發其他交互 */
+.bottom-card.swiping .card-content {
+    pointer-events: auto;
+}
+
+/* 紀錄導航區塊 - 強制置中內容 */
+.records-nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    padding: 8px 0;
+}
+
+
+/* 滑動時的內容淡入淡出效果 */
+#mobile-location-photos, 
+#mobile-location-photos img, 
+.visit-info, 
+.visit-info p, 
+.location-notes, 
+.location-notes p {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 確保按鈕正確定位 */
+#mobile-prev-record, 
+#prev-record {
+    position: absolute;
+    left: 15px;
+}
+
+#mobile-next-record, 
+#next-record {
+    position: absolute;
+    right: 15px;
+}
+
+/* 確保圓點指示器在紀錄指示器下方 */
+.swipe-indicators {
+    margin-top: 25px !important;
+}
 /* 🔹 響應式設計（適用手機版） */
-/* ======================== */
 @media screen and (max-width: 1024px) {
     /* 隱藏桌面版側邊欄 */
     .sidebar {
@@ -369,4 +414,29 @@ html, body {
     .btn-position-adjust {
         bottom: 20px !important;
     }
+
+    #mobile-prev-record, #mobile-next-record {
+        opacity: 0.5; /* 減小按鈕可見度但不完全隱藏 */
+    }
+    
+    /* Make the indicator more centered without the buttons */
+    .records-nav {
+        justify-content: center;
+    }
+
+    /* 設置滑動指示器的樣式 */
+    .swipe-indicators {
+        padding: 5px 0;
+    }
+}
+
+/* 添加用於捕獲觸摸事件的透明覆蓋層 */
+.swipe-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: transparent;
 }
