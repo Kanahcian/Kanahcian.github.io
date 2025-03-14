@@ -45,30 +45,18 @@
                 <button id="next-record" class="nav-btn">&gt;</button>
             </div>
             
-            <div class="visit-info">
-                <p><i class="fas fa-calendar"></i> <span id="visit-date">訪視時間</span></p>
-                <p><i class="fas fa-user"></i> <span id="visitor-name">訪視人</span></p>
-                <p><i class="fas fa-book"></i> <span id="visit-semester">學期</span></p>
+            <!-- 整合的資訊區塊 -->
+            <div class="visit-info-integrated" id="integrated-info">
+                <!-- 由 JavaScript 動態填充整合資訊 -->
             </div>
-            <div class="location-photos" id="location-photos">
+
+            <!-- 照片區塊 -->
+            <div class="photo-container" id="location-photos">
                 <!-- 照片將由JavaScript動態添加 -->
             </div>
 
-            <!-- 新增參與人員區塊 -->
-            <div class="participants-section">
-                <h3><i class="fas fa-users"></i> 參與學生</h3>
-                <div id="students-container">
-                    <!-- 參與學生將由JavaScript動態添加 -->
-                </div>
-                
-                <h3><i class="fas fa-home"></i> 村民</h3>
-                <div id="villagers-container">
-                    <!-- 村民將由JavaScript動態添加 -->
-                </div>
-            </div>
-
             <!-- 訪視筆記 -->
-            <div class="location-notes">
+            <div class="visit-notes">
                 <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
                 <p id="visit-notes">訪視筆記內容...</p>
             </div>
@@ -94,29 +82,18 @@
                 <button id="mobile-next-record" class="nav-btn">&gt;</button>
             </div>
             
-            <div class="visit-info">
-                <p><i class="fas fa-calendar"></i> <span id="mobile-visit-date">訪視時間</span></p>
-                <p><i class="fas fa-user"></i> <span id="mobile-visitor-name">訪視人</span></p>
-                <p><i class="fas fa-book"></i> <span id="mobile-visit-semester">學期</span></p>
-            </div>
-            <div class="location-photos" id="mobile-location-photos">
-                <!-- 照片將由 JavaScript 動態添加 -->
+            <!-- 整合的資訊區塊 (手機版) -->
+            <div class="visit-info-integrated" id="mobile-integrated-info">
+                <!-- 由 JavaScript 動態填充整合資訊 -->
             </div>
 
-            <!-- 新增參與人員區塊 (手機版) -->
-            <div class="participants-section">
-                <h3><i class="fas fa-users"></i> 參與學生</h3>
-                <div id="mobile-students-container">
-                    <!-- 參與學生將由JavaScript動態添加 -->
-                </div>
-                
-                <h3><i class="fas fa-home"></i> 村民</h3>
-                <div id="mobile-villagers-container">
-                    <!-- 村民將由JavaScript動態添加 -->
-                </div>
+            <!-- 照片區塊 (手機版) -->
+            <div class="photo-container" id="mobile-location-photos">
+                <!-- 照片將由 JavaScript 動態添加 -->
             </div>
             
-            <div class="location-notes">
+            <!-- 訪視筆記 (手機版) -->
+            <div class="visit-notes">
                 <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
                 <p id="mobile-visit-notes">訪視筆記內容...</p>
             </div>

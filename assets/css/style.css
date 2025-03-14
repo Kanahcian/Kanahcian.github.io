@@ -1,84 +1,79 @@
-/* 🔹 全局樣式 */
-html, body {
-    height: 100%;  /* 讓整個頁面填滿螢幕 */
-    margin: 0;  /* 移除預設邊距 */
-    font-family: 'Arial', sans-serif;  /* 設定全局字體 */
+/* ===========================================
+   1. 基礎樣式
+   =========================================== */
+   html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
 }
 
-/* 🔹 地圖滿版 */
+/* ===========================================
+   2. 地圖相關
+   =========================================== */
+/* 地圖容器 */
 #map {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;  /* 讓地圖填滿畫面 */
+    width: 100%;
     height: 100%;
-    z-index: 1;  /* 確保地圖不會被其他 UI 蓋住 */
+    z-index: 1;
 }
 
-/* 🔹 懸浮搜尋輸入框（類似 Google Maps） */
-.search-container {
-    position: absolute;
-    top: 20px; /* 讓搜尋框靠近畫面上方 */
-    left: 50%; /* 讓搜尋框在水平方向置中 */
-    transform: translateX(-50%); /* 確保搜尋框真正置中 */
-    background: rgb(251, 251, 248); /* 柔和背景色 */
-    padding: 12px 20px; /* 內部間距，讓搜尋框更大 */
-    border-radius: 25px; /* 讓搜尋框有圓角 */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* 增加陰影，讓 UI 立體 */
+/* 地圖圖層切換按鈕 */
+.map-switch-button {
+    position: absolute !important;
+    width: 60px;
+    height: 60px;
+    bottom: 110px;
+    right: 10px;
+    border-radius: 30% !important;
+    cursor: pointer;
+    z-index: 2;
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
     display: flex;
     align-items: center;
-    z-index: 2; /* 確保搜尋框在地圖上層 */
+    justify-content: center;
+    overflow: hidden;
+    padding: 0 !important;
+    background: white;
 }
 
-/* 🔹 搜尋輸入框設定 */
-.search-container input {
-    border: none; /* 移除預設邊框 */
-    outline: none; /* 移除點擊後的藍色邊框 */
-    width: 250px; /* 搜尋欄寬度 */
-    font-size: 16px; /* 文字大小 */
-    text-align: left; /* 讓文字靠左對齊 */
-    background: transparent; /* 移除背景顏色 */
+.map-switch-button:hover {
+    background: rgba(200, 200, 200, 0.9);
 }
 
-/* 🔹 手機版底部導航列 */
-.mobile-footer {
-    display: flex; /* 確保預設顯示 */
-    position: fixed; /* 固定在螢幕底部 */
-    bottom: 0;
-    left: 0;
-    width: 100%; /* 讓導航列填滿螢幕 */
-    background: rgb(238, 238, 224); /* 背景色 */
-    padding: 12px 0; /* 設定內邊距 */
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3); /* 陰影，讓 UI 更立體 */
-    text-align: center;
-    justify-content: space-around; /* 讓按鈕均分排列 */
-    align-items: center; /* 垂直置中 */
-    z-index: 9999; /* 確保不會被地圖覆蓋 */
+.map-switch-button img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
 }
 
-/* 🔹 手機版底部導航內的按鈕 */
-.mobile-footer button {
-        background: none;
-        border: none;
-        font-size: 16px;
-        padding: 8px 12px;
-        cursor: pointer;
-    }
+/* 地圖圖層展開選單 */
+.leaflet-control-layers-expanded {
+    width: auto !important;
+    min-width: 120px !important;
+    background: white;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+    padding: 15px !important;
+}
 
-/* 🔹 定位按鈕 UI（固定在右下角） */
+/* 定位按鈕 */
 .locate-button {
     position: fixed;
-    bottom: 50px; /* 距離底部 */
-    right: 20px; /* 距離右邊 */
-    width: 60px; /* 固定寬度 */
-    height: 60px; /* 固定高度 */
+    bottom: 50px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
     background: white;
     border: none;
-    border-radius: 30%; /* 讓按鈕變圓 */
+    border-radius: 30%;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     font-size: 15px;
     cursor: pointer;
-    z-index: 2; /* 確保按鈕顯示在最上層 */
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,70 +83,38 @@ html, body {
     background: rgba(200, 200, 200, 0.9);
 }
 
-/* 🔹 地圖縮放按鈕（+ / -）移動到右下角 */
-/* .leaflet-control-zoom {
-    position: absolute !important;
-    transform: scale(1.5);
-    bottom: 160px; 
-    right: 19px; 
-    z-index: 2; } */
-
-/* 🔹 縮放按鈕的樣式 */
-/* .leaflet-control-zoom a {
-    background: rgb(255, 255, 255); 
-    border-radius: 0%; 
-    width: 180px; 
-    height: 180px;
+/* ===========================================
+   3. 搜尋欄
+   =========================================== */
+.search-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(251, 251, 248);
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 25px; 
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);} */
-
-/* 🔹 修正地圖圖層按鈕 */
-.map-switch-button {
-    position: absolute !important; 
-    width: 60px;  /* 固定寬度 */
-    height: 60px;  /* 固定高度 */
-    bottom: 110px; /* 距離底部 */
-    right: 10px; /* 距離右邊 */
-    border-radius: 30% !important; /* 讓按鈕變圓 */
-    cursor: pointer;
-    z-index: 2; /* 確保按鈕顯示在最上層 */
-    border: none !important;  /* 移除邊框 */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* 確保內容不會超出 */
-    padding: 0 !important; /* 避免內部元素影響大小 */
-    background: white; /* 確保按鈕背景顏色 */
+    z-index: 2;
 }
 
-/* 🔹 讓展開的選單不受影響 */
-.leaflet-control-layers-expanded {
-    width: auto !important; /* 讓選單可以自適應展開 */
-    min-width: 120px !important; /* 最小寬度，避免太窄 */
-    background: white; /* 確保展開時顯示 */
-    border-radius: 10px !important; /* 讓選單圓角更美觀 */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
-    padding: 15px !important; /* 增加內距，讓選單內的選項不擠在一起 */
+.search-container input {
+    border: none;
+    outline: none;
+    width: 250px;
+    font-size: 16px;
+    text-align: left;
+    background: transparent;
 }
 
-.map-switch-button img {
-    width: 70%; /* 讓圖片不超過按鈕 */
-    height: 70%; /* 讓圖片不超過按鈕 */
-    object-fit: contain; /* 確保圖片不變形 */
-}
-
-.map-switch-button:hover {
-    background: rgba(200, 200, 200, 0.9);
-}
-
-/* 🔹 側邊欄樣式 (桌面版) */
+/* ===========================================
+   4. 側邊欄（桌面版）
+   =========================================== */
 .sidebar {
     position: absolute;
-    left: -400px; /* 初始隱藏在畫面外 */
+    left: -400px;
     top: 0;
     width: 350px;
     height: 100%;
@@ -164,7 +127,7 @@ html, body {
 }
 
 .sidebar.active {
-    left: 0; /* 顯示側邊欄 */
+    left: 0;
 }
 
 .sidebar-close {
@@ -186,65 +149,26 @@ html, body {
     font-size: 22px;
 }
 
-.visit-info {
-    margin-bottom: 20px;
-    color: #666;
-}
-
-.visit-info p {
-    margin: 8px 0;
-    font-size: 15px;
-}
-
-.visit-info i {
-    margin-right: 8px;
-    color: #4a8fe7;
-}
-
-.location-photos {
-    margin: 20px 0;
-}
-
-.location-photos img {
-    width: 100%;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.location-notes {
-    padding: 10px 0;
-    border-top: 1px solid #eee;
-}
-
-.location-notes h3 {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
-}
-
-.location-notes p {
-    line-height: 1.6;
-    color: #666;
-}
-
-/* 🔹 底部卡片樣式 (手機版) */
+/* ===========================================
+   5. 底部卡片（手機版）
+   =========================================== */
 .bottom-card {
     position: fixed;
-    bottom: -100%;  /* 初始隱藏在畫面外 */
+    bottom: -100%;
     left: 0;
     width: 100%;
-    height: 100%; /* 佔滿整個螢幕 */
+    height: 100%;
     background: white;
-    z-index: 1000; /* 提高層級，確保覆蓋在地圖和按鈕之上 */
+    z-index: 1000;
     border-radius: 20px 20px 0 0;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
     transition: bottom 0.3s ease;
-    overflow-y: auto; /* 允許內容滾動 */
+    overflow-y: auto;
+    touch-action: pan-y;
 }
 
 .bottom-card.active {
-    bottom: 0; /* 顯示底部卡片 */
+    bottom: 0;
 }
 
 .drag-handle {
@@ -258,6 +182,9 @@ html, body {
 
 .card-content {
     padding: 0 20px 20px 20px;
+    touch-action: pan-y;
+    position: relative;
+    z-index: 1;
 }
 
 .card-content h2 {
@@ -279,13 +206,20 @@ html, body {
     color: #333;
 }
 
-/* 🔹 紀錄導覽列樣式 */
+.bottom-card.swiping .card-content {
+    pointer-events: auto;
+}
+
+/* ===========================================
+   6. 紀錄導覽
+   =========================================== */
 .records-nav {
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 10px 0;
+    justify-content: center !important;
     padding: 8px 0;
+    margin: 10px 0;
     background-color: #f5f5f5;
     border-radius: 20px;
 }
@@ -309,62 +243,6 @@ html, body {
     cursor: not-allowed;
 }
 
-/* 紀錄指示器 - 絕對定位使其完美置中 */
-#mobile-record-indicator, 
-#record-indicator {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    margin: 0;
-    z-index: 2;
-    font-size: 14px;
-    color: #666;
-}
-
-/* 新增學期標籤樣式 */
-.visit-info i.fa-book {
-    color: #e74c3c;
-}
-
-/* 確保底部卡片有適當的觸摸處理 */
-.bottom-card {
-    touch-action: pan-y; /* 允許垂直滾動但捕獲水平滑動 */
-}
-
-/* 確保卡片內容可以被滑動 */
-.card-content {
-    touch-action: pan-y;
-    position: relative;
-    z-index: 1;
-}
-
-/* 防止滑動時觸發其他交互 */
-.bottom-card.swiping .card-content {
-    pointer-events: auto;
-}
-
-/* 紀錄導航區塊 - 強制置中內容 */
-.records-nav {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center !important;
-    padding: 8px 0;
-}
-
-
-/* 滑動時的內容淡入淡出效果 */
-#mobile-location-photos, 
-#mobile-location-photos img, 
-.visit-info, 
-.visit-info p, 
-.location-notes, 
-.location-notes p {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* 確保按鈕正確定位 */
 #mobile-prev-record, 
 #prev-record {
     position: absolute;
@@ -377,18 +255,33 @@ html, body {
     right: 15px;
 }
 
-/* 確保圓點指示器在紀錄指示器下方 */
+#mobile-record-indicator, 
+#record-indicator {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    margin: 0;
+    z-index: 2;
+    font-size: 14px;
+    color: #666;
+}
+
 .swipe-indicators {
     margin-top: 25px !important;
 }
 
-/* 地點簡介樣式 */
+/* ===========================================
+   7. 簡介與資訊區塊
+   =========================================== */
+/* 地點簡介 */
 .location-brief {
     margin: 10px 0 15px 0;
     padding: 10px;
     background-color: #fdfdfd;
     border-radius: 8px;
     border-left: 4px solid #81aade;
+    display: none; /* 預設隱藏，由 JS 控制顯示 */
 }
 
 .location-brief p {
@@ -403,145 +296,184 @@ html, body {
     margin-right: 8px;
 }
 
-/* 預設隱藏簡介區塊，由 JavaScript 根據有無內容來控制顯示 */
-#location-brief, #mobile-location-brief {
-    display: none;
+/* 整合式資訊區塊 */
+.visit-info-integrated {
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-
-.visit-info i.fa-user {
-    color: #1c8173;
-}
-
-/* 新增參與者區塊樣式 */
-.participants-section {
-    margin: 15px 0;
-    padding-top: 10px;
-    border-top: 1px solid #eee;
-}
-
-.participants-section h3 {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
+.record-title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
 
-.participants-section h3 i {
+.record-title h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.record-date {
+    color: #666;
+    font-size: 14px;
+}
+
+/* 垂直布局的資訊區塊 */
+.info-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.info-item-title {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.info-item-title i {
+    width: 20px;
+    text-align: center;
     margin-right: 8px;
     color: #4a8fe7;
 }
 
-.participants-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
+.info-item.semester .info-item-title i {
+    color: #e74c3c;
 }
 
+.info-item.students .info-item-title i {
+    color: #1c8173;
+}
+
+.info-item.villagers .info-item-title i {
+    color: #33801d;
+}
+
+.info-item-content {
+    padding-left: 28px;
+}
+
+/* 參與者標籤 */
 .participant-tag {
+    display: inline-block;
     background-color: #f0f5ff;
     border: 1px solid #d0e0ff;
-    border-radius: 15px;
-    padding: 4px 12px;
-    font-size: 13px;
-    color: #4a6997;
-    display: inline-block;
+    border-radius: 12px;
+    padding: 2px 8px;
+    margin-right: 4px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    white-space: nowrap;
 }
 
-.students-list .participant-tag {
-    background-color: #f0f8ff;
+.participant-tag.student {
+    background-color: #e8f4fa;
     border-color: #cce5ff;
     color: #0066cc;
 }
 
-.villagers-list .participant-tag {
-    background-color: #f5fff0;
+.participant-tag.villager {
+    background-color: #f0f8eb;
     border-color: #d6f5c6;
     color: #33801d;
 }
 
-.empty-list {
-    color: #888;
+.empty-info {
+    color: #999;
     font-style: italic;
-    font-size: 14px;
-    margin: 5px 0 15px;
+    font-size: 12px;
 }
 
-/* 改進照片顯示樣式 */
-.location-photos img {
-    width: 100%;
+/* ===========================================
+   8. 照片與訪視筆記
+   =========================================== */
+/* 照片容器 */
+.photo-container {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.photo-container img {
+    max-width: 100%;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: transform 0.3s ease;
 }
 
-.location-photos img:hover {
+.photo-container img:hover {
     transform: scale(1.02);
 }
 
-/* 改進筆記區域樣式 */
-.location-notes {
-    padding: 10px 0;
-    border-top: 1px solid #eee;
+/* 訪視筆記 */
+.visit-notes {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #4a8fe7;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    line-height: 1.6;
 }
 
-.location-notes h3 {
-    font-size: 16px;
-    color: #555;
+.visit-notes h3 {
+    margin-top: 0;
     margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
     display: flex;
     align-items: center;
 }
 
-.location-notes h3 i {
+.visit-notes h3 i {
     margin-right: 8px;
     color: #4a8fe7;
 }
 
+.visit-notes p {
+    margin: 0;
+    color: #555;
+}
+
+/* ===========================================
+   9. 滑動相關
+   =========================================== */
+.swipe-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: transparent;
+}
+
+#mobile-location-photos, 
+#mobile-location-photos img, 
+.visit-info, 
+.visit-info p, 
+.location-notes, 
 .location-notes p {
-    line-height: 1.6;
-    color: #444;
-    background-color: #fafafa;
-    padding: 10px;
-    border-radius: 5px;
-    border-left: 3px solid #4a8fe7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* 改進訪視信息樣式 */
-.visit-info {
-    margin-bottom: 20px;
-    background-color: #f8f9fa;
-    padding: 10px 15px;
-    border-radius: 8px;
-}
-
-.visit-info p {
-    margin: 8px 0;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-}
-
-.visit-info i {
-    margin-right: 10px;
-    width: 20px;
-    text-align: center;
-    color: #4a8fe7;
-}
-
-/* 改進日期和學期標籤 */
-#visit-date, #mobile-visit-date {
-    font-weight: 500;
-    color: #4a8fe7;
-}
-
-#visit-semester, #mobile-visit-semester {
-    color: #e74c3c;
-    font-weight: 500;
-}
-/* 🔹 響應式設計（適用手機版） */
+/* ===========================================
+   10. 響應式設計
+   =========================================== */
 @media screen and (max-width: 1024px) {
     /* 隱藏桌面版側邊欄 */
     .sidebar {
@@ -560,14 +492,15 @@ html, body {
     
     /* 調整按鈕位置，避免被底部卡片擋住 */
     .locate-button {
-        bottom: 20px !important; /* 固定在右下角 */
-        z-index: 1001; /* 確保在底部卡片之上 */
-        transition: none !important; /* 移除過渡效果 */
+        bottom: 20px !important;
+        z-index: 1001;
+        transition: none !important;
     }
+    
     .map-switch-button {
-        bottom: 80px !important; /* 固定在右下角 */
-        z-index: 1001; /* 確保在底部卡片之上 */
-        transition: none !important; /* 移除過渡效果 */
+        bottom: 80px !important;
+        z-index: 1001;
+        transition: none !important;
     }
     
     /* 當底部卡片活動時，調整按鈕位置 */
@@ -576,10 +509,10 @@ html, body {
     }
 
     #mobile-prev-record, #mobile-next-record {
-        opacity: 0.5; /* 減小按鈕可見度但不完全隱藏 */
+        opacity: 0.5;
     }
     
-    /* Make the indicator more centered without the buttons */
+    /* 確保導航按鈕置中 */
     .records-nav {
         justify-content: center;
     }
@@ -588,15 +521,4 @@ html, body {
     .swipe-indicators {
         padding: 5px 0;
     }
-}
-
-/* 添加用於捕獲觸摸事件的透明覆蓋層 */
-.swipe-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    background: transparent;
 }

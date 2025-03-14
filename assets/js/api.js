@@ -1,4 +1,4 @@
-const apiBaseUrl = "http://127.0.0.1:8000";
+const apiBaseUrl = "https://kanahcian-backend.onrender.com";
 // 本機測試： http://127.0.0.1:8000
 // 部署到 Render： https://kanahcian-backend.onrender.com
 var customIcon = L.icon({

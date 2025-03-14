@@ -67,84 +67,105 @@ document.addEventListener("DOMContentLoaded", function() {
         mobileNextRecordBtn.disabled = window.currentRecordIndex === totalRecords - 1;
     }
 
-    // 創建參與者列表HTML
-    function createParticipantsList(participants, type) {
+    // 創建參與者標籤
+    function createParticipantTags(participants, type) {
         if (!participants || participants.length === 0) {
-            return `<p class="empty-list">無${type === 'students' ? '學生' : '村民'}參與</p>`;
+            return `<span class="empty-info">無${type === 'student' ? '學生' : '村民'}參與</span>`;
         }
         
-        return `
-            <div class="participants-list ${type}-list">
-                ${participants.map(person => `
-                    <span class="participant-tag">${person}</span>
-                `).join('')}
-            </div>
-        `;
+        return participants.map(person => 
+            `<span class="participant-tag ${type}">${person}</span>`
+        ).join('');
     }
     
-    // 更新顯示的紀錄內容
+    // 更新顯示的紀錄內容 - 垂直布局
     window.updateRecordContent = function() {
         const record = window.currentRecords[window.currentRecordIndex];
         if (!record) return;
         
-        // 更新桌面版側邊欄
-        document.getElementById("visit-date").textContent = record.date || "未記錄";
-        document.getElementById("visitor-name").textContent = record.visitor || "未記錄";
-        document.getElementById("visit-semester").textContent = record.semester || "未記錄";
-        document.getElementById("visit-notes").textContent = record.description || "無訪視筆記";
+        // 格式化日期顯示
+        const dateText = record.date || "未記錄";
+        const semesterText = record.semester || "未記錄";
         
-        // 更新參與者區域 (桌面版)
-        const studentsContainer = document.getElementById("students-container");
-        const villagersContainer = document.getElementById("villagers-container");
+        // ======== 桌面版更新 ========
         
-        if (studentsContainer) {
-            studentsContainer.innerHTML = createParticipantsList(record.students, 'students');
-        }
+        // 1. 建立垂直布局資訊區塊
+        const infoHtml = `
+            <div class="record-title">
+                <h3>訪視紀錄</h3>
+                <span class="record-date">${dateText}</span>
+            </div>
+            <div class="info-section">
+                <!-- 學期 -->
+                <div class="info-item semester">
+                    <div class="info-item-title">
+                        <i class="fas fa-book"></i>
+                        <span>學期</span>
+                    </div>
+                    <div class="info-item-content">
+                        ${semesterText}
+                    </div>
+                </div>
+                
+                <!-- 參與學生 -->
+                <div class="info-item students">
+                    <div class="info-item-title">
+                        <i class="fas fa-users"></i>
+                        <span>參與學生</span>
+                    </div>
+                    <div class="info-item-content">
+                        ${createParticipantTags(record.students, 'student')}
+                    </div>
+                </div>
+                
+                <!-- 村民 -->
+                <div class="info-item villagers">
+                    <div class="info-item-title">
+                        <i class="fas fa-home"></i>
+                        <span>村民</span>
+                    </div>
+                    <div class="info-item-content">
+                        ${createParticipantTags(record.villagers, 'villager')}
+                    </div>
+                </div>
+            </div>
+        `;
         
-        if (villagersContainer) {
-            villagersContainer.innerHTML = createParticipantsList(record.villagers, 'villagers');
-        }
-
-        // 更新手機版底部卡片
-        document.getElementById("mobile-visit-date").textContent = record.date || "未記錄";
-        document.getElementById("mobile-visitor-name").textContent = record.visitor || "未記錄";
-        document.getElementById("mobile-visit-semester").textContent = record.semester || "未記錄";
-        document.getElementById("mobile-visit-notes").textContent = record.description || "無訪視筆記";
+        // 更新桌面版整合資訊區塊
+        document.getElementById("integrated-info").innerHTML = infoHtml;
         
-        // 更新參與者區域 (手機版)
-        const mobileStudentsContainer = document.getElementById("mobile-students-container");
-        const mobileVillagersContainer = document.getElementById("mobile-villagers-container");
-        
-        if (mobileStudentsContainer) {
-            mobileStudentsContainer.innerHTML = createParticipantsList(record.students, 'students');
-        }
-        
-        if (mobileVillagersContainer) {
-            mobileVillagersContainer.innerHTML = createParticipantsList(record.villagers, 'villagers');
-        }
-
-        // 清空並添加照片
+        // 2. 更新照片
         const photosContainer = document.getElementById("location-photos");
-        const mobilePhotosContainer = document.getElementById("mobile-location-photos");
-        
         photosContainer.innerHTML = "";
-        mobilePhotosContainer.innerHTML = "";
         
         if (record.photo) {
-            // 桌面版照片
             const img = document.createElement("img");
             img.src = record.photo;
             img.alt = "訪視照片";
             img.onerror = function() {
-                // 圖片載入失敗時顯示錯誤訊息
-                this.onerror = null; // 防止無限循環
-                this.src = 'assets/images/photo-error.png'; // 可以替換為一個錯誤圖片
+                this.onerror = null;
+                this.src = 'assets/images/photo-error.png';
                 console.error("照片載入失敗:", record.photo);
-                photosContainer.innerHTML += "<p class='photo-error'>照片載入失敗</p>";
+                photosContainer.innerHTML = "<p class='photo-error'>照片載入失敗</p>";
             };
             photosContainer.appendChild(img);
-            
-            // 手機版照片
+        } else {
+            photosContainer.innerHTML = "<p>暫無照片</p>";
+        }
+        
+        // 3. 更新訪視筆記
+        document.getElementById("visit-notes").textContent = record.description || "無訪視筆記";
+        
+        // ======== 手機版更新 ========
+        
+        // 1. 更新手機版整合資訊區塊
+        document.getElementById("mobile-integrated-info").innerHTML = infoHtml;
+        
+        // 2. 更新手機版照片
+        const mobilePhotosContainer = document.getElementById("mobile-location-photos");
+        mobilePhotosContainer.innerHTML = "";
+        
+        if (record.photo) {
             const mobileImg = document.createElement("img");
             mobileImg.src = record.photo;
             mobileImg.alt = "訪視照片";
@@ -152,14 +173,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 this.onerror = null;
                 this.src = 'assets/images/photo-error.png';
                 console.error("照片載入失敗:", record.photo);
-                mobilePhotosContainer.innerHTML += "<p class='photo-error'>照片載入失敗</p>";
+                mobilePhotosContainer.innerHTML = "<p class='photo-error'>照片載入失敗</p>";
             };
             mobilePhotosContainer.appendChild(mobileImg);
         } else {
-            // 如果沒有照片，顯示提示訊息
-            photosContainer.innerHTML = "<p>暫無照片</p>";
             mobilePhotosContainer.innerHTML = "<p>暫無照片</p>";
         }
+        
+        // 3. 更新手機版訪視筆記
+        document.getElementById("mobile-visit-notes").textContent = record.description || "無訪視筆記";
         
         // 更新導覽狀態
         updateNavigationState();
