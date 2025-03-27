@@ -1,0 +1,143 @@
+/* ===========================================
+   搜尋欄樣式擴展
+   =========================================== */
+
+/* 搜尋容器 - 相對定位以便放置下拉列表 */
+.search-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(251, 251, 248);
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+/* 搜尋容器聚焦時 */
+.search-container.active {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* 搜尋輸入框 */
+.search-container input {
+    border: none;
+    outline: none;
+    width: 250px;
+    font-size: 16px;
+    text-align: left;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+/* 搜尋圖標 */
+.search-icon {
+    color: #777;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+/* 搜尋建議下拉列表 */
+.search-suggestions {
+    position: absolute !important;
+    top: calc(100% + 8px) !important; /* 位於搜尋欄下方 */
+    left: 0 !important;
+    width: 100% !important;
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    z-index: 1000 !important; /* 確保在地圖上方 */
+    display: none; /* 初始隱藏 */
+}
+
+/* 建議列表項目 */
+.suggestion-item {
+    padding: 12px 16px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    transition: background-color 0.2s ease !important;
+    font-family: Arial, sans-serif !important;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none !important;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f5ff !important;
+}
+
+/* 無結果提示 */
+.suggestion-item.no-results {
+    color: #999 !important;
+    font-style: italic !important;
+    justify-content: center !important;
+    cursor: default !important;
+}
+
+.suggestion-item.no-results:hover {
+    background-color: white !important;
+}
+
+/* 建議名稱 */
+.suggestion-name {
+    font-size: 15px;
+    color: #333;
+}
+
+/* 高亮匹配部分 */
+.highlight-match {
+    font-weight: bold;
+    color: #1a73e8;
+    background-color: rgba(26, 115, 232, 0.1);
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+/* 相似度分數（可選顯示） */
+.suggestion-score {
+    font-size: 12px;
+    color: #888;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+/* 清除按鈕 */
+.search-clear {
+    display: none; /* 預設隱藏 */
+    color: #999;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: color 0.2s ease;
+}
+
+.search-clear:hover {
+    color: #333;
+}
+
+.search-container input:not(:placeholder-shown) + .search-clear {
+    display: block; /* 有內容時顯示 */
+}
+
+/* 移動設備適配 */
+@media screen and (max-width: 768px) {
+    .search-container {
+        width: 80%;
+        max-width: 300px;
+    }
+    
+    .search-container input {
+        width: 100%;
+    }
+}
