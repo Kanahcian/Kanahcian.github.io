@@ -69,13 +69,61 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 創建參與者標籤
     function createParticipantTags(participants, type) {
+        console.log(`創建${type}標籤，數據:`, participants);
         if (!participants || participants.length === 0) {
             return `<span class="empty-info">無${type === 'student' ? '學生' : '村民'}參與</span>`;
         }
         
-        return participants.map(person => 
-            `<span class="participant-tag ${type}">${person}</span>`
-        ).join('');
+        // 為村民標籤添加特殊樣式和提示
+        let tags = '';
+        
+        if (type === 'villager') {
+            console.log("創建村民標籤，數據:", participants);
+            
+            // 檢查是否有村民ID數據
+            if (window.villagerIdMap && Object.keys(window.villagerIdMap).length > 0) {
+                // 使用緩存的村民ID
+                tags = participants.map(person => {
+                    const name = typeof person === 'object' ? person.name : person;
+                    const id = window.villagerIdMap[name] || 1;
+                    return `<span class="participant-tag ${type}" data-id="${id}" title="點擊查看詳細資訊">${name}</span>`;
+                }).join('');
+            } else {
+                // 如果沒有ID緩存，創建臨時映射表
+                window.villagerIdMap = {};
+                
+                // 假設participants可能是對象數組或字符串數組
+                tags = participants.map((person, index) => {
+                    // 如果是對象並且有id屬性
+                    if (typeof person === 'object' && person.id) {
+                        // 緩存ID以便後續使用
+                        window.villagerIdMap[person.name] = person.id;
+                        return `<span class="participant-tag ${type}" data-id="${person.id}" title="點擊查看詳細資訊">${person.name}</span>`;
+                    } else {
+                        // 如果只是字符串，使用索引+1作為臨時ID
+                        // 注意：這可能導致錯誤的ID映射，僅作為後備方案
+                        const name = typeof person === 'object' ? person.name : person;
+                        const tempId = index + 1; // 臨時ID
+                        return `<span class="participant-tag ${type}" data-id="${tempId}" title="點擊查看詳細資訊">${name}</span>`;
+                    }
+                }).join('');
+            }
+            
+            // 為村民標籤添加提示（如果是桌面版）
+            if (window.innerWidth > 1024) {
+                tags += `
+                <span class="participant-hint">
+                    <i class="fas fa-info-circle"></i> 點擊村民名稱查看詳情
+                </span>`;
+            }
+        } else {
+            // 學生標籤，普通顯示
+            tags = participants.map(person => 
+                `<span class="participant-tag ${type}">${typeof person === 'object' ? person.name : person}</span>`
+            ).join('');
+        }
+        
+        return tags;
     }
     
     // 更新顯示的紀錄內容 - 垂直布局
@@ -231,6 +279,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // 設定簡介內容
             document.getElementById("brief-description").textContent = locationData.brief_description;
             document.getElementById("mobile-brief-description").textContent = locationData.brief_description;
+            window.currentRecords = locationData.records;
         } else {
             // 隱藏簡介區塊
             document.getElementById("location-brief").style.display = "none";

@@ -1,0 +1,260 @@
+/* =============================================
+   村民資訊彈窗樣式
+   ============================================= */
+
+/* 彈窗覆蓋層 */
+.villager-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.villager-modal-overlay.active {
+    display: flex;
+}
+
+/* 彈窗主體 */
+.villager-modal {
+    background-color: white;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 彈窗標題區 */
+.villager-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+
+.villager-modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+#villager-modal-close {
+    font-size: 22px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#villager-modal-close:hover {
+    color: #333;
+}
+
+/* 彈窗內容區 */
+.villager-modal-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* 村民照片容器 */
+.villager-photo-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.villager-photo-container img {
+    max-width: 100%;
+    max-height: 250px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.villager-photo-container p {
+    color: #999;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+/* 村民資訊區 */
+.villager-info {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.info-label {
+    width: 80px;
+    color: #666;
+    font-weight: 500;
+}
+
+.info-value {
+    flex: 1;
+    color: #333;
+}
+
+/* 連結樣式 */
+.info-value a {
+    color: #4a8fe7;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.info-value a i {
+    margin-right: 5px;
+}
+
+.info-value a:hover {
+    text-decoration: underline;
+}
+
+/* 點擊互動樣式 */
+.participant-tag.villager {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    padding-right: 18px; /* 為圖示留出空間 */
+}
+
+/* 添加小圖示提示可點擊 */
+.participant-tag.villager:after {
+    content: '\f06e'; /* 使用 eye 圖示 */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    opacity: 0.6;
+    color: #33801d;
+}
+
+.participant-tag.villager:hover {
+    background-color: #e8f4e5;
+    border-color: #33801d;
+}
+
+.participant-tag.villager:hover:after {
+    opacity: 1;
+}
+
+/* 參與者提示 */
+.participant-hint {
+    display: block;
+    margin-top: 8px;
+    color: #666;
+    font-size: 12px;
+    font-style: italic;
+    animation: fadeIn 0.5s ease;
+}
+
+.participant-hint i {
+    color: #33801d;
+    margin-right: 4px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 長按提示（行動裝置） */
+@media (max-width: 768px) {
+    .participant-tag.villager:active {
+        background-color: #e0f0d8;
+    }
+}
+
+/* 提示泡泡 */
+.villager-click-hint {
+    position: absolute;
+    z-index: 2500;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.villager-click-hint.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.villager-click-hint .hint-content {
+    background-color: rgba(51, 128, 29, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    max-width: 220px;
+    line-height: 1.4;
+}
+
+.villager-click-hint .hint-arrow {
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(51, 128, 29, 0.9);
+}
+
+.villager-click-hint .hint-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 8px;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.villager-click-hint .hint-close:hover {
+    color: #f0f0f0;
+}
+
+/* 彈窗動畫 */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

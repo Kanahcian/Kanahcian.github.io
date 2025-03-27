@@ -1,4 +1,7 @@
-const apiBaseUrl = "https://kanahcian-backend.onrender.com";
+// 在 api.js 中
+// var apiBaseUrl = "https://kanahcian-backend.onrender.com";
+// 或者本地測試
+var apiBaseUrl = "http://127.0.0.1:8000";
 // 本機測試： http://127.0.0.1:8000
 // 部署到 Render： https://kanahcian-backend.onrender.com
 var customIcon = L.icon({
@@ -47,7 +50,9 @@ function addMarkersToMap(locations) {
                             description: record.description || "無訪視筆記",
                             photo: convertGoogleDriveLink(record.photo),
                             students: record.students || [],
-                            villagers: record.villagers || []
+                            villagers: record.villagers || [],
+                            // 如果後端提供了完整的村民詳情，則存儲它們（用於村民彈窗）
+                            villagerDetails: record.villagerDetails || []
                         }))
                     };
 
@@ -125,26 +130,42 @@ async function fetchRecords(locationId) {
         console.log("API 回應資料:", data);
         
         // 直接返回格式化後的資料
+        // 在 fetchRecords 函數中
         if (data.status === "success" && Array.isArray(data.data)) {
-            return data.data.map(record => ({
-                recordId: record.recordid,
-                semester: record.semester,
-                date: record.date,
-                description: record.description || "無訪視筆記",
-                photo: convertGoogleDriveLink(record.photo),
-                account: record.account,
-                students: record.students || [],
-                villagers: record.villagers || []
-            }));
+            return data.data.map(record => {
+                // 檢查是否有村民詳情數據
+                let villagerDetails = [];
+                
+                // 從村民詳情中創建帶ID的村民數據
+                if (record.villagers && Array.isArray(record.villagers)) {
+                    // 如果只有村民名稱，則使用臨時ID
+                    villagerDetails = record.villagers.map((name, index) => ({
+                        name: name,
+                        id: index + 1  // 臨時ID，在實際情況中，您可能需要從其他地方獲取正確的ID
+                    }));
+                }
+                
+                return {
+                    recordId: record.recordid,
+                    semester: record.semester,
+                    date: record.date,
+                    description: record.description || "無訪視筆記",
+                    photo: convertGoogleDriveLink(record.photo),
+                    account: record.account,
+                    students: record.students || [],
+                    villagers: record.villagers || [],
+                    villagerDetails: villagerDetails
+                };
+            });
         } else {
-            console.error("API 回應格式不符預期:", data);
-            return [];
+                    console.error("API 回應格式不符預期:", data);
+                    return [];
+                }
+            } catch (error) {
+                console.error("API 請求錯誤:", error);
+                return [];
+            }
         }
-    } catch (error) {
-        console.error("API 請求錯誤:", error);
-        return [];
-    }
-}
 
 function convertGoogleDriveLink(url) {
     if (!url) return null;
