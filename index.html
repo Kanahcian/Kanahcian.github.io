@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>加拿家家訪地圖</title>
-
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-    <!-- 自訂樣式 -->
-    <link rel="stylesheet" href="assets/css/style.css">
-
-    <!-- 村民彈窗樣式 -->
-    <link rel="stylesheet" href="assets/css/villager-modal.css">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>加拿家家訪地圖</title>
     
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- 網站 Logo -->
-    <link rel="icon" type="image/png" href="assets\images\logo.png">
-
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+        <!-- 自訂樣式 -->
+        <link rel="stylesheet" href="assets/css/style.css">
+        
+        <!-- 搜尋欄樣式 -->
+        <link rel="stylesheet" href="assets/css/search.css">
+    
+        <!-- 村民彈窗樣式 -->
+        <link rel="stylesheet" href="assets/css/villager-modal.css">
+        
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+        <!-- 網站 Logo -->
+        <link rel="icon" type="image/png" href="assets\images\logo.png">
+    
+        <!-- Font Awesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    </head>
 <body>
 
-    <!-- 🔹 電腦版搜尋欄 -->
+    <!-- 🔹 搜尋欄 -->
     <div class="search-container">
-        <input type="text" placeholder="在這裡搜尋...">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="search-input" placeholder="搜尋地點名稱...">
+        <i class="fas fa-times search-clear" id="search-clear"></i>
     </div>
 
     <!-- 🔹 側邊欄 (桌面版) -->
@@ -118,6 +123,7 @@
     <script src="assets/js/sidebar.js"></script>
     <script src="assets/js/swipe-navigation.js"></script>
     <script src="assets/js/villager-modal.js"></script>
+    <script src="assets/js/search.js"></script>
 
 </body>
 </html>
