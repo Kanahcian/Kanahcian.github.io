@@ -10,6 +10,8 @@ var customIcon = L.icon({
     popupAnchor: [0, -40]
 });
 
+// 記錄獲取狀態標誌
+window.recordsLoading = false;
 
 // GET/location API
 async function fetchLocations() {
@@ -35,6 +37,9 @@ function addMarkersToMap(locations) {
         if (!isNaN(lat) && !isNaN(lon)) {
             L.marker([lat, lon], { icon: customIcon }).addTo(map)
                 .on('click', async function() {
+                    // 設置紀錄加載狀態為正在加載
+                    window.recordsLoading = true;
+                    
                     // 先準備基本位置數據
                     const locationData = {
                         id: loc.id,
@@ -42,6 +47,11 @@ function addMarkersToMap(locations) {
                         brief_description: loc.brief_description || ""
                     };
 
+                    // 立即顯示側邊欄（僅顯示基本位置信息）
+                    if (typeof window.updateSidebarContent === 'function') {
+                        window.updateSidebarContent(locationData);
+                    }
+                    
                     // 在背景獲取紀錄數據
                     fetchRecords(loc.id).then(records => {
                         // 將獲取的紀錄數據添加到位置數據
@@ -58,23 +68,24 @@ function addMarkersToMap(locations) {
                             villagerDetails: record.villagerDetails || []
                         }));
                         
+                        // 設置紀錄加載狀態為加載完成
+                        window.recordsLoading = false;
+                        
                         // 更新側邊欄內容
                         if (typeof window.updateSidebarContent === 'function') {
                             window.updateSidebarContent(locationData);
                         }
                     }).catch(error => {
                         console.error("獲取記錄失敗:", error);
+                        // 設置紀錄加載狀態為加載完成（即使失敗）
+                        window.recordsLoading = false;
+                        
                         // 即使獲取記錄失敗，仍然顯示位置基本信息
                         if (typeof window.updateSidebarContent === 'function') {
                             locationData.records = [];
                             window.updateSidebarContent(locationData);
                         }
                     });
-                    
-                    // 立即顯示側邊欄（僅顯示基本位置信息）
-                    if (typeof window.updateSidebarContent === 'function') {
-                        window.updateSidebarContent(locationData);
-                    }
                 });
         }
     });
