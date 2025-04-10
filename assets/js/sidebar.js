@@ -8,15 +8,165 @@ document.addEventListener("DOMContentLoaded", function() {
     const dragHandle = document.querySelector(".drag-handle");
     const locateBtn = document.getElementById("locate-btn");
     
+    // 家訪紀錄按鈕元素
+    const showRecordsBtn = document.getElementById("show-records-btn");
+    const mobileShowRecordsBtn = document.getElementById("mobile-show-records-btn");
+    
     // 導覽按鈕元素
     const prevRecordBtn = document.getElementById("prev-record");
     const nextRecordBtn = document.getElementById("next-record");
     const mobilePrevRecordBtn = document.getElementById("mobile-prev-record");
     const mobileNextRecordBtn = document.getElementById("mobile-next-record");
     
+    // 紀錄內容區塊
+    const recordsSectionDesktop = document.getElementById("records-section");
+    const recordsSectionMobile = document.getElementById("mobile-records-section");
+    
+    // 地點基本信息區塊
+    const locationInfoDesktop = document.getElementById("location-info");
+    const locationInfoMobile = document.getElementById("mobile-location-info");
+    
+    // 加載動畫區塊
+    const loadingIndicatorDesktop = document.getElementById("records-loading-indicator");
+    const loadingIndicatorMobile = document.getElementById("mobile-records-loading-indicator");
+    
     // 全局變數，用於存儲當前位置的所有紀錄和當前顯示的紀錄索引
     window.currentRecords = [];
     window.currentRecordIndex = 0;
+    window.recordsVisible = false; // 追蹤紀錄區塊是否可見
+    
+    // 切換家訪紀錄顯示狀態
+    function toggleRecordsVisibility(visible) {
+        window.recordsVisible = visible;
+        
+        // 更新桌面版顯示
+        if (recordsSectionDesktop) {
+            recordsSectionDesktop.style.display = visible ? "block" : "none";
+        }
+        
+        // 更新手機版顯示
+        if (recordsSectionMobile) {
+            recordsSectionMobile.style.display = visible ? "block" : "none";
+        }
+        
+        // 切換地點基本信息的顯示/隱藏狀態（與記錄區塊相反）
+        if (locationInfoDesktop) {
+            locationInfoDesktop.style.display = visible ? "none" : "block";
+        }
+        
+        if (locationInfoMobile) {
+            locationInfoMobile.style.display = visible ? "none" : "block";
+        }
+        
+        // 更新按鈕文字
+        if (showRecordsBtn) {
+            showRecordsBtn.innerHTML = visible ? 
+                '<i class="fas fa-map-marker-alt"></i> 返回地點資訊' : 
+                '<i class="fas fa-clipboard-list"></i> 顯示家訪紀錄';
+        }
+        
+        if (mobileShowRecordsBtn) {
+            mobileShowRecordsBtn.innerHTML = visible ? 
+                '<i class="fas fa-map-marker-alt"></i> 返回地點資訊' : 
+                '<i class="fas fa-clipboard-list"></i> 顯示家訪紀錄';
+        }
+        
+        // 如果顯示紀錄，確保更新紀錄內容
+        if (visible) {
+            window.updateRecordContent();
+        }
+    }
+    
+    // 初始隱藏紀錄區塊
+    toggleRecordsVisibility(false);
+    
+    // 顯示/隱藏加載指示器
+    function toggleLoadingIndicator(show) {
+        // 桌面版加載指示器
+        if (loadingIndicatorDesktop) {
+            loadingIndicatorDesktop.style.display = show ? "flex" : "none";
+        }
+        
+        // 手機版加載指示器
+        if (loadingIndicatorMobile) {
+            loadingIndicatorMobile.style.display = show ? "flex" : "none";
+        }
+        
+        // 更新按鈕狀態
+        if (showRecordsBtn) {
+            if (show) {
+                showRecordsBtn.classList.add("loading");
+                showRecordsBtn.disabled = true;
+                showRecordsBtn.innerHTML = '<i class="fas fa-spinner"></i> 獲取家訪紀錄中...';
+            } else {
+                showRecordsBtn.classList.remove("loading");
+                showRecordsBtn.disabled = false;
+                showRecordsBtn.innerHTML = '<i class="fas fa-clipboard-list"></i> 顯示家訪紀錄';
+            }
+        }
+        
+        if (mobileShowRecordsBtn) {
+            if (show) {
+                mobileShowRecordsBtn.classList.add("loading");
+                mobileShowRecordsBtn.disabled = true;
+                mobileShowRecordsBtn.innerHTML = '<i class="fas fa-spinner"></i> 獲取家訪紀錄中...';
+            } else {
+                mobileShowRecordsBtn.classList.remove("loading");
+                mobileShowRecordsBtn.disabled = false;
+                mobileShowRecordsBtn.innerHTML = '<i class="fas fa-clipboard-list"></i> 顯示家訪紀錄';
+            }
+        }
+    }
+    
+    // 檢查加載狀態的間隔（每200毫秒檢查一次）
+    let loadingCheckInterval = null;
+    
+    // 開始監控記錄加載狀態
+    function startLoadingCheck() {
+        // 先清除可能存在的舊計時器
+        if (loadingCheckInterval) {
+            clearInterval(loadingCheckInterval);
+        }
+        
+        // 設置加載狀態
+        toggleLoadingIndicator(true);
+        
+        // 開始定期檢查
+        loadingCheckInterval = setInterval(() => {
+            if (typeof window.recordsLoading !== 'undefined' && !window.recordsLoading) {
+                // 加載完成，停止檢查並更新UI
+                clearInterval(loadingCheckInterval);
+                loadingCheckInterval = null;
+                toggleLoadingIndicator(false);
+                updateNavigationState();
+            }
+        }, 200);
+        
+        // 設置安全超時（10秒後強制停止等待）
+        setTimeout(() => {
+            if (loadingCheckInterval) {
+                clearInterval(loadingCheckInterval);
+                loadingCheckInterval = null;
+                toggleLoadingIndicator(false);
+                updateNavigationState();
+                
+                console.warn("記錄加載超時，已停止等待");
+            }
+        }, 10000);
+    }
+    
+    // 綁定顯示/隱藏家訪紀錄按鈕事件
+    if (showRecordsBtn) {
+        showRecordsBtn.addEventListener("click", function() {
+            toggleRecordsVisibility(!window.recordsVisible);
+        });
+    }
+    
+    if (mobileShowRecordsBtn) {
+        mobileShowRecordsBtn.addEventListener("click", function() {
+            toggleRecordsVisibility(!window.recordsVisible);
+        });
+    }
     
     // 關閉側邊欄
     sidebarClose.addEventListener("click", function() {
@@ -65,6 +215,29 @@ document.addEventListener("DOMContentLoaded", function() {
         nextRecordBtn.disabled = window.currentRecordIndex === totalRecords - 1;
         mobilePrevRecordBtn.disabled = window.currentRecordIndex === 0;
         mobileNextRecordBtn.disabled = window.currentRecordIndex === totalRecords - 1;
+        
+        // 根據記錄數量和加載狀態顯示或隱藏家訪紀錄按鈕
+        const hasRecords = totalRecords > 0;
+        
+        if (showRecordsBtn) {
+            if (window.recordsLoading) {
+                // 如果正在加載，顯示加載狀態
+                showRecordsBtn.style.display = "block";
+            } else {
+                // 加載完成，根據是否有記錄決定顯示
+                showRecordsBtn.style.display = hasRecords ? "block" : "none";
+            }
+        }
+        
+        if (mobileShowRecordsBtn) {
+            if (window.recordsLoading) {
+                // 如果正在加載，顯示加載狀態
+                mobileShowRecordsBtn.style.display = "block";
+            } else {
+                // 加載完成，根據是否有記錄決定顯示
+                mobileShowRecordsBtn.style.display = hasRecords ? "block" : "none";
+            }
+        }
     }
 
     // 創建參與者標籤
@@ -128,6 +301,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // 更新顯示的紀錄內容 - 垂直布局
     window.updateRecordContent = function() {
+        // 如果紀錄不可見，不需要更新內容
+        if (!window.recordsVisible) return;
+        
         const record = window.currentRecords[window.currentRecordIndex];
         if (!record) return;
         
@@ -279,34 +455,36 @@ document.addEventListener("DOMContentLoaded", function() {
             // 設定簡介內容
             document.getElementById("brief-description").textContent = locationData.brief_description;
             document.getElementById("mobile-brief-description").textContent = locationData.brief_description;
-            window.currentRecords = locationData.records;
         } else {
             // 隱藏簡介區塊
             document.getElementById("location-brief").style.display = "none";
             document.getElementById("mobile-location-brief").style.display = "none";
         }
         
+        // 如果正在加載記錄，啟動加載檢查
+        if (typeof window.recordsLoading !== 'undefined' && window.recordsLoading) {
+            startLoadingCheck();
+        } else {
+            // 沒有加載或加載已完成
+            toggleLoadingIndicator(false);
+        }
+        
         // 保存所有紀錄並重置索引
         if (locationData.records && locationData.records.length > 0) {
             window.currentRecords = locationData.records;
         } else {
-            // 如果沒有提供紀錄列表，創建一個單一紀錄
-            window.currentRecords = [{
-                date: locationData.visitDate || "未記錄",
-                visitor: locationData.visitor || "未記錄",
-                semester: "未記錄",
-                description: locationData.notes || "無訪視筆記",
-                photo: locationData.photos && locationData.photos.length > 0 ? locationData.photos[0] : null,
-                students: [],
-                villagers: []
-            }];
+            // 如果沒有提供紀錄列表，創建一個空陣列
+            window.currentRecords = [];
         }
         
         // 重置為第一筆紀錄
         window.currentRecordIndex = 0;
         
-        // 更新內容
-        window.updateRecordContent();
+        // 初始顯示地點信息，隱藏紀錄區塊
+        toggleRecordsVisibility(false);
+        
+        // 更新導覽狀態
+        updateNavigationState();
         
         // 根據設備顯示相應界面
         if (window.innerWidth <= 1024) {
@@ -323,4 +501,3 @@ document.addEventListener("DOMContentLoaded", function() {
         adjustButtonPositions(false); // 確保按鈕恢復顯示
     });
 });
-
