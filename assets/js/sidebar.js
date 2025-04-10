@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return tags;
     }
     
-    // 更新顯示的紀錄內容 - 垂直布局
+    // 更新顯示的紀錄內容 - 使用更緊湊的版面設計
     window.updateRecordContent = function() {
         // 如果紀錄不可見，不需要更新內容
         if (!window.recordsVisible) return;
@@ -313,56 +313,64 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // ======== 桌面版更新 ========
         
-        // 1. 建立垂直布局資訊區塊
+        // 1. 建立更緊湊的訪視紀錄卡片
         const infoHtml = `
-            <div class="record-title">
-                <h3>訪視紀錄</h3>
-                <span class="record-date">${dateText}</span>
+        <!-- 家訪資訊區塊 - 獨立卡片 -->
+        <div class="info-card">
+            <!-- 記錄頭部信息 -->
+            <div class="record-header">
+                <div class="record-date">${dateText}</div>
+                <div class="record-semester"><i class="fas fa-book"></i> ${semesterText}</div>
             </div>
-            <div class="info-section">
-                <!-- 學期 -->
-                <div class="info-item semester">
-                    <div class="info-item-title">
-                        <i class="fas fa-book"></i>
-                        <span>學期</span>
-                    </div>
-                    <div class="info-item-content">
-                        ${semesterText}
+            
+            <!-- 參與者信息 -->
+            <div class="record-participants">
+                <div class="participant-row">
+                    <div class="participant-icon"><i class="fas fa-users"></i></div>
+                    <div class="participant-label">參與學生:</div>
+                    <div class="participant-tags">
+                        ${record.students && record.students.length > 0 
+                            ? createParticipantTags(record.students, 'student')
+                            : '<span class="no-participants">無學生參與</span>'}
                     </div>
                 </div>
                 
-                <!-- 參與學生 -->
-                <div class="info-item students">
-                    <div class="info-item-title">
-                        <i class="fas fa-users"></i>
-                        <span>參與學生</span>
-                    </div>
-                    <div class="info-item-content">
-                        ${createParticipantTags(record.students, 'student')}
-                    </div>
-                </div>
-                
-                <!-- 村民 -->
-                <div class="info-item villagers">
-                    <div class="info-item-title">
-                        <i class="fas fa-home"></i>
-                        <span>村民</span>
-                    </div>
-                    <div class="info-item-content">
-                        ${createParticipantTags(record.villagers, 'villager')}
+                <div class="participant-row">
+                    <div class="participant-icon"><i class="fas fa-home"></i></div>
+                    <div class="participant-label">村民:</div>
+                    <div class="participant-tags">
+                        ${record.villagers && record.villagers.length > 0 
+                            ? createParticipantTags(record.villagers, 'villager')
+                            : '<span class="no-participants">無村民參與</span>'}
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- 訪視筆記區塊 - 獨立卡片 -->
+        <div class="note-card">
+            <div class="note-header">
+                <i class="fas fa-clipboard"></i> 訪視筆記
+            </div>
+            <div class="note-content">
+                ${record.description || "無訪視筆記"}
+            </div>
+        </div>
         `;
+        
+        // 移除index.html中多餘的訪視筆記標籤
+        // 照片下方不再顯示訪視筆記
         
         // 更新桌面版整合資訊區塊
         document.getElementById("integrated-info").innerHTML = infoHtml;
         
-        // 2. 更新照片
+        // 2. 更新照片 (在訪視筆記之後)
         const photosContainer = document.getElementById("location-photos");
         photosContainer.innerHTML = "";
         
         if (record.photo) {
+            // 移除限制大小的類別，讓照片保持原始大小
+            photosContainer.className = "photo-wrapper";
             const img = document.createElement("img");
             img.src = record.photo;
             img.alt = "訪視照片";
@@ -377,19 +385,18 @@ document.addEventListener("DOMContentLoaded", function() {
             photosContainer.innerHTML = "<p>暫無照片</p>";
         }
         
-        // 3. 更新訪視筆記
-        document.getElementById("visit-notes").textContent = record.description || "無訪視筆記";
-        
         // ======== 手機版更新 ========
         
-        // 1. 更新手機版整合資訊區塊
+        // 1. 更新手機版整合資訊區塊 (使用與桌面版相同的緊湊布局)
         document.getElementById("mobile-integrated-info").innerHTML = infoHtml;
         
-        // 2. 更新手機版照片
+        // 2. 更新手機版照片 (在訪視筆記之後)
         const mobilePhotosContainer = document.getElementById("mobile-location-photos");
         mobilePhotosContainer.innerHTML = "";
         
         if (record.photo) {
+            // 移除限制大小的類別，讓照片保持原始大小
+            mobilePhotosContainer.className = "photo-wrapper";
             const mobileImg = document.createElement("img");
             mobileImg.src = record.photo;
             mobileImg.alt = "訪視照片";
@@ -403,9 +410,6 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             mobilePhotosContainer.innerHTML = "<p>暫無照片</p>";
         }
-        
-        // 3. 更新手機版訪視筆記
-        document.getElementById("mobile-visit-notes").textContent = record.description || "無訪視筆記";
         
         // 更新導覽狀態
         updateNavigationState();

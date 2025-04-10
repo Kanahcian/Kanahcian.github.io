@@ -1,7 +1,7 @@
 // 在 api.js 中
-// var apiBaseUrl = "https://kanahcian-backend.onrender.com";
+var apiBaseUrl = "https://kanahcian-backend.onrender.com";
 // 或者本地測試
-var apiBaseUrl = "http://127.0.0.1:8000";
+// var apiBaseUrl = "http://127.0.0.1:8000";
 
 var customIcon = L.icon({
     iconUrl: 'assets/images/pin.png',
