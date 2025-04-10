@@ -472,6 +472,55 @@
 }
 
 /* ===========================================
+   11. 家訪紀錄相關
+   =========================================== */
+/* 家訪紀錄按鈕 */
+.records-toggle-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 15px 0;
+    background-color: #4a8fe7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.records-toggle-btn:hover {
+    background-color: #3972c0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.records-toggle-btn i {
+    margin-right: 8px;
+}
+
+/* 家訪紀錄區塊 */
+.records-section {
+    display: none; /* 預設隱藏 */
+    margin-top: 15px;
+    animation: fadeIn 0.3s ease;
+}
+
+/* 淡入動畫 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===========================================
    10. 響應式設計
    =========================================== */
 @media screen and (max-width: 1024px) {
@@ -520,5 +569,11 @@
     /* 設置滑動指示器的樣式 */
     .swipe-indicators {
         padding: 5px 0;
+    }
+
+    .records-toggle-btn {
+        margin: 10px 0;
+        padding: 8px 12px;
+        font-size: 14px;
     }
 }

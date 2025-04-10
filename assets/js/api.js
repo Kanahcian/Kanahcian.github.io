@@ -1,7 +1,7 @@
 // 在 api.js 中
-var apiBaseUrl = "https://kanahcian-backend.onrender.com";
+// var apiBaseUrl = "https://kanahcian-backend.onrender.com";
 // 或者本地測試
-// var apiBaseUrl = "http://127.0.0.1:8000";
+var apiBaseUrl = "http://127.0.0.1:8000";
 
 var customIcon = L.icon({
     iconUrl: 'assets/images/pin.png',
@@ -35,13 +35,17 @@ function addMarkersToMap(locations) {
         if (!isNaN(lat) && !isNaN(lon)) {
             L.marker([lat, lon], { icon: customIcon }).addTo(map)
                 .on('click', async function() {
-                    const records = await fetchRecords(loc.id);  // 呼叫 fetchRecords 取得訪視紀錄
-
+                    // 先準備基本位置數據
                     const locationData = {
                         id: loc.id,
                         name: loc.name || "未命名地點",
-                        brief_description: loc.brief_description || "",
-                        records: records.map(record => ({
+                        brief_description: loc.brief_description || ""
+                    };
+
+                    // 在背景獲取紀錄數據
+                    fetchRecords(loc.id).then(records => {
+                        // 將獲取的紀錄數據添加到位置數據
+                        locationData.records = records.map(record => ({
                             recordId: record.recordid,
                             date: formatDate(record.date),
                             visitor: record.account || "家訪小組",
@@ -52,9 +56,22 @@ function addMarkersToMap(locations) {
                             villagers: record.villagers || [],
                             // 如果後端提供了完整的村民詳情，則存儲它們（用於村民彈窗）
                             villagerDetails: record.villagerDetails || []
-                        }))
-                    };
-
+                        }));
+                        
+                        // 更新側邊欄內容
+                        if (typeof window.updateSidebarContent === 'function') {
+                            window.updateSidebarContent(locationData);
+                        }
+                    }).catch(error => {
+                        console.error("獲取記錄失敗:", error);
+                        // 即使獲取記錄失敗，仍然顯示位置基本信息
+                        if (typeof window.updateSidebarContent === 'function') {
+                            locationData.records = [];
+                            window.updateSidebarContent(locationData);
+                        }
+                    });
+                    
+                    // 立即顯示側邊欄（僅顯示基本位置信息）
                     if (typeof window.updateSidebarContent === 'function') {
                         window.updateSidebarContent(locationData);
                     }
@@ -181,4 +198,3 @@ function convertGoogleDriveLink(url) {
 
 // 當DOM加載完成後獲取位置
 document.addEventListener("DOMContentLoaded", fetchLocations);
-

@@ -13,6 +13,13 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
         
+        // 獲取記錄區塊
+        const recordsSection = document.getElementById("mobile-records-section");
+        if (!recordsSection) {
+            console.warn("找不到記錄區塊，無法初始化滑動功能");
+            return;
+        }
+        
         // 將原始sidebar.js中的局部變數暴露到window對象
         // 這樣我們的滑動功能可以訪問這些變數
         exposeOriginalVariables();
@@ -22,9 +29,9 @@ document.addEventListener("DOMContentLoaded", function() {
         let touchEndX = 0;
         const minSwipeDistance = 50; // 最小滑動距離（像素）
         
-        // 為整個底部卡片添加觸摸事件
-        bottomCard.addEventListener("touchstart", handleTouchStart, false);
-        bottomCard.addEventListener("touchend", handleTouchEnd, false);
+        // 為記錄區塊添加觸摸事件
+        recordsSection.addEventListener("touchstart", handleTouchStart, false);
+        recordsSection.addEventListener("touchend", handleTouchEnd, false);
         
         // 處理觸摸開始事件
         function handleTouchStart(event) {
@@ -33,6 +40,9 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // 處理觸摸結束事件
         function handleTouchEnd(event) {
+            // 只有在記錄區塊顯示時才處理滑動
+            if (window.recordsVisible !== true) return;
+            
             touchEndX = event.changedTouches[0].screenX;
             handleSwipe();
         }
@@ -67,8 +77,8 @@ document.addEventListener("DOMContentLoaded", function() {
         function animateContent(direction) {
             const contentElements = [
                 document.getElementById("mobile-location-photos"),
-                bottomCard.querySelector(".visit-info"),
-                bottomCard.querySelector(".location-notes")
+                document.querySelector("#mobile-integrated-info"),
+                document.getElementById("mobile-visit-notes")
             ];
             
             const translateValue = direction === 'left' ? '-15px' : '15px';
@@ -117,6 +127,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 更新指示器圓點
             function updateDots() {
+                // 只有在記錄區塊顯示時才更新圓點
+                if (window.recordsVisible !== true) return;
+                
                 const container = document.querySelector(".swipe-indicators");
                 if (!container) return;
                 
@@ -145,6 +158,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     originalUpdateRecordContent.apply(this, arguments);
                     updateDots();
                 };
+            }
+            
+            // 監聽記錄顯示狀態變化
+            // 監聽顯示/隱藏按鈕點擊
+            const mobileShowRecordsBtn = document.getElementById("mobile-show-records-btn");
+            if (mobileShowRecordsBtn) {
+                mobileShowRecordsBtn.addEventListener("click", () => {
+                    // 檢查記錄區塊是否將被顯示
+                    if (recordsSection.style.display === "none" || recordsSection.style.display === "") {
+                        // 在短暫延遲後更新圓點，確保記錄區塊已顯示
+                        setTimeout(updateDots, 100);
+                    }
+                });
             }
         }
         

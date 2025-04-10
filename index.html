@@ -41,32 +41,41 @@
         <div class="location-details">
             <h2 id="location-name">地點名稱</h2>
 
-            <!-- 地點簡介 -->
-            <div class="location-brief" id="location-brief">
-                <p><i class="fas fa-bookmark"></i> <span id="brief-description">地點簡介內容...</span></p>
+            <!-- 家訪紀錄按鈕 -->
+            <button id="show-records-btn" class="records-toggle-btn"><i class="fas fa-clipboard-list"></i> 顯示家訪紀錄</button>
+            
+            <!-- 地點基本信息區塊 -->
+            <div id="location-info" class="location-info">
+                <!-- 地點簡介 -->
+                <div class="location-brief" id="location-brief">
+                    <p><i class="fas fa-bookmark"></i> <span id="brief-description">地點簡介內容...</span></p>
+                </div>
             </div>
             
-            <!-- 紀錄切換導覽列 -->
-            <div class="records-nav">
-                <button id="prev-record" class="nav-btn">&lt;</button>
-                <span id="record-indicator">紀錄 1/1</span>
-                <button id="next-record" class="nav-btn">&gt;</button>
-            </div>
-            
-            <!-- 整合的資訊區塊 -->
-            <div class="visit-info-integrated" id="integrated-info">
-                <!-- 由 JavaScript 動態填充整合資訊 -->
-            </div>
+            <!-- 家訪紀錄區塊 - 可切換顯示 -->
+            <div id="records-section" class="records-section">
+                <!-- 紀錄切換導覽列 -->
+                <div class="records-nav">
+                    <button id="prev-record" class="nav-btn">&lt;</button>
+                    <span id="record-indicator">紀錄 1/1</span>
+                    <button id="next-record" class="nav-btn">&gt;</button>
+                </div>
+                
+                <!-- 整合的資訊區塊 -->
+                <div class="visit-info-integrated" id="integrated-info">
+                    <!-- 由 JavaScript 動態填充整合資訊 -->
+                </div>
 
-            <!-- 照片區塊 -->
-            <div class="photo-container" id="location-photos">
-                <!-- 照片將由JavaScript動態添加 -->
-            </div>
+                <!-- 照片區塊 -->
+                <div class="photo-container" id="location-photos">
+                    <!-- 照片將由JavaScript動態添加 -->
+                </div>
 
-            <!-- 訪視筆記 -->
-            <div class="visit-notes">
-                <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
-                <p id="visit-notes">訪視筆記內容...</p>
+                <!-- 訪視筆記 -->
+                <div class="visit-notes">
+                    <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
+                    <p id="visit-notes">訪視筆記內容...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -78,32 +87,41 @@
         <div class="card-content">
             <h2 id="mobile-location-name">地點名稱</h2>
 
-             <!-- 地點簡介 (手機版) -->
-             <div class="location-brief" id="mobile-location-brief">
-                <p><i class="fas fa-bookmark"></i> <span id="mobile-brief-description">地點簡介內容...</span></p>
+            <!-- 家訪紀錄按鈕 (手機版) -->
+            <button id="mobile-show-records-btn" class="records-toggle-btn"><i class="fas fa-clipboard-list"></i> 顯示家訪紀錄</button>
+            
+            <!-- 地點基本信息區塊 (手機版) -->
+            <div id="mobile-location-info" class="location-info">
+                <!-- 地點簡介 (手機版) -->
+                <div class="location-brief" id="mobile-location-brief">
+                    <p><i class="fas fa-bookmark"></i> <span id="mobile-brief-description">地點簡介內容...</span></p>
+                </div>
             </div>
             
-            <!-- 紀錄切換導覽列 (手機版) -->
-            <div class="records-nav">
-                <button id="mobile-prev-record" class="nav-btn">&lt;</button>
-                <span id="mobile-record-indicator">紀錄 1/1</span>
-                <button id="mobile-next-record" class="nav-btn">&gt;</button>
-            </div>
-            
-            <!-- 整合的資訊區塊 (手機版) -->
-            <div class="visit-info-integrated" id="mobile-integrated-info">
-                <!-- 由 JavaScript 動態填充整合資訊 -->
-            </div>
+            <!-- 家訪紀錄區塊 - 可切換顯示 (手機版) -->
+            <div id="mobile-records-section" class="records-section">
+                <!-- 紀錄切換導覽列 (手機版) -->
+                <div class="records-nav">
+                    <button id="mobile-prev-record" class="nav-btn">&lt;</button>
+                    <span id="mobile-record-indicator">紀錄 1/1</span>
+                    <button id="mobile-next-record" class="nav-btn">&gt;</button>
+                </div>
+                
+                <!-- 整合的資訊區塊 (手機版) -->
+                <div class="visit-info-integrated" id="mobile-integrated-info">
+                    <!-- 由 JavaScript 動態填充整合資訊 -->
+                </div>
 
-            <!-- 照片區塊 (手機版) -->
-            <div class="photo-container" id="mobile-location-photos">
-                <!-- 照片將由 JavaScript 動態添加 -->
-            </div>
-            
-            <!-- 訪視筆記 (手機版) -->
-            <div class="visit-notes">
-                <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
-                <p id="mobile-visit-notes">訪視筆記內容...</p>
+                <!-- 照片區塊 (手機版) -->
+                <div class="photo-container" id="mobile-location-photos">
+                    <!-- 照片將由 JavaScript 動態添加 -->
+                </div>
+                
+                <!-- 訪視筆記 (手機版) -->
+                <div class="visit-notes">
+                    <h3><i class="fas fa-clipboard"></i> 訪視筆記</h3>
+                    <p id="mobile-visit-notes">訪視筆記內容...</p>
+                </div>
             </div>
         </div>
     </div>
