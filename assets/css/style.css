@@ -582,6 +582,145 @@
     animation: loading-btn 2s infinite;
 }
 
+/* ===========================================
+   訪視紀錄卡片優化樣式 - 添加到 style.css
+   =========================================== */
+
+/* 訪視紀錄卡片樣式 */
+.visit-record-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 15px;
+    overflow: hidden;
+  }
+  
+  /* 記錄頭部信息 */
+  .record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .record-date {
+    font-weight: 500;
+    color: #555;
+    font-size: 15px;
+  }
+  
+  .record-semester {
+    color: #e74c3c;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .record-semester i {
+    margin-right: 4px;
+  }
+  
+  /* 參與者信息 */
+  .record-participants {
+    padding: 12px 15px;
+    background-color: #fbfbfb;
+  }
+  
+  .participant-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  
+  .participant-row:last-child {
+    margin-bottom: 0;
+  }
+  
+  .participant-icon {
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    margin-right: 8px;
+  }
+  
+  .participant-icon i {
+    color: #4a8fe7;
+  }
+  
+  .participant-row:nth-child(1) .participant-icon i {
+    color: #1c8173;
+  }
+  
+  .participant-row:nth-child(2) .participant-icon i {
+    color: #33801d;
+  }
+  
+  .participant-label {
+    width: 70px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .participant-tags {
+    flex: 1;
+  }
+  
+  .no-participants {
+    color: #999;
+    font-style: italic;
+    font-size: 13px;
+  }
+  
+  /* 訪視筆記樣式優化 */
+  .visit-notes {
+    padding: 12px 15px;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+  }
+  
+  .visit-notes h4 {
+    margin: 0 0 8px 0;
+    font-size: 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+  }
+  
+  .visit-notes h4 i {
+    margin-right: 6px;
+    color: #4a8fe7;
+  }
+  
+  .visit-notes p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+  }
+  
+  /* 照片區塊優化 - 不限制圖片大小 */
+  .photo-wrapper {
+    margin-top: 8px;
+    text-align: center;
+    background-color: #fff;
+    padding: 0;
+    
+  }
+  
+  .photo-wrapper img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  
+  .photo-error {
+    color: #e74c3c;
+    font-style: italic;
+    padding: 15px;
+    font-size: 14px;
+  }
+
 @keyframes loading-btn {
     0% {
         left: -100%;
@@ -650,4 +789,25 @@
         padding: 8px 12px;
         font-size: 14px;
     }
+
+    .participant-label {
+        width: 60px;
+        font-size: 13px;
+      }
+      
+      .visit-notes h4 {
+        font-size: 14px;
+      }
+      
+      .visit-notes p {
+        font-size: 13px;
+      }
+      
+      .record-header {
+        padding: 8px 12px;
+      }
+      
+      .record-participants {
+        padding: 10px 12px;
+      }
 }
