@@ -114,9 +114,9 @@
    =========================================== */
 .sidebar {
     position: absolute;
-    left: -400px;
+    left: -550px;
     top: 0;
-    width: 350px;
+    width: 500px;
     height: 100%;
     background: white;
     z-index: 1000;
@@ -721,6 +721,144 @@
     font-size: 14px;
   }
 
+
+
+/* 基礎卡片樣式 - 兩種卡片共用的基礎樣式 */
+.info-card, .note-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+/* 家訪資訊卡片樣式 */
+.info-card {
+  border-left: 4px solid #4a8fe7;
+}
+
+/* 訪視筆記卡片樣式 */
+.note-card {
+  border-left: 4px solid #33801d;
+}
+
+.note-header {
+  background-color: #f8f9fa;
+  padding: 12px 15px;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.note-header i {
+  color: #33801d;
+  margin-right: 8px;
+}
+
+.note-content {
+  padding: 12px 15px;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* 無訪視筆記時的樣式 */
+.note-content:empty::after {
+  content: "無訪視筆記";
+  color: #999;
+  font-style: italic;
+}
+
+/* 記錄頭部信息 */
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.record-date {
+  font-weight: 500;
+  color: #555;
+  font-size: 15px;
+}
+
+.record-semester {
+  color: #e74c3c;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.record-semester i {
+  margin-right: 4px;
+}
+
+/* 參與者信息 */
+.record-participants {
+  padding: 12px 15px;
+}
+
+.participant-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.participant-row:last-child {
+  margin-bottom: 0;
+}
+
+.participant-icon {
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.participant-icon i {
+  color: #4a8fe7;
+}
+
+.participant-row:nth-child(1) .participant-icon i {
+  color: #1c8173;
+}
+
+.participant-row:nth-child(2) .participant-icon i {
+  color: #33801d;
+}
+
+.participant-label {
+  width: 70px;
+  font-size: 14px;
+  color: #666;
+}
+
+.participant-tags {
+  flex: 1;
+}
+
+.no-participants {
+  color: #999;
+  font-style: italic;
+  font-size: 13px;
+}
+
+/* 照片區塊 */
+.photo-wrapper {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.photo-wrapper img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
 @keyframes loading-btn {
     0% {
         left: -100%;
@@ -808,6 +946,21 @@
       }
       
       .record-participants {
+        padding: 10px 12px;
+      }
+
+      .participant-label {
+        width: 60px;
+        font-size: 13px;
+      }
+      
+      .note-header {
+        font-size: 14px;
+        padding: 10px 12px;
+      }
+      
+      .note-content {
+        font-size: 13px;
         padding: 10px 12px;
       }
 }

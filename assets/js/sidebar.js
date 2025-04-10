@@ -315,42 +315,47 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // 1. 建立更緊湊的訪視紀錄卡片
         const infoHtml = `
-            <div class="visit-record-card">
-                <!-- 記錄頭部信息 -->
-                <div class="record-header">
-                    <div class="record-date">${dateText}</div>
-                    <div class="record-semester"><i class="fas fa-book"></i> ${semesterText}</div>
-                </div>
-                
-                <!-- 參與者信息 -->
-                <div class="record-participants">
-                    <div class="participant-row">
-                        <div class="participant-icon"><i class="fas fa-users"></i></div>
-                        <div class="participant-label">參與學生:</div>
-                        <div class="participant-tags">
-                            ${record.students && record.students.length > 0 
-                                ? createParticipantTags(record.students, 'student')
-                                : '<span class="no-participants">無學生參與</span>'}
-                        </div>
-                    </div>
-                    
-                    <div class="participant-row">
-                        <div class="participant-icon"><i class="fas fa-home"></i></div>
-                        <div class="participant-label">村民:</div>
-                        <div class="participant-tags">
-                            ${record.villagers && record.villagers.length > 0 
-                                ? createParticipantTags(record.villagers, 'villager')
-                                : '<span class="no-participants">無村民參與</span>'}
-                        </div>
+        <!-- 家訪資訊區塊 - 獨立卡片 -->
+        <div class="info-card">
+            <!-- 記錄頭部信息 -->
+            <div class="record-header">
+                <div class="record-date">${dateText}</div>
+                <div class="record-semester"><i class="fas fa-book"></i> ${semesterText}</div>
+            </div>
+            
+            <!-- 參與者信息 -->
+            <div class="record-participants">
+                <div class="participant-row">
+                    <div class="participant-icon"><i class="fas fa-users"></i></div>
+                    <div class="participant-label">參與學生:</div>
+                    <div class="participant-tags">
+                        ${record.students && record.students.length > 0 
+                            ? createParticipantTags(record.students, 'student')
+                            : '<span class="no-participants">無學生參與</span>'}
                     </div>
                 </div>
                 
-                <!-- 訪視筆記 - 置於參與者之後，照片之前 -->
-                <div class="visit-notes">
-                    <h4><i class="fas fa-clipboard"></i> 訪視筆記</h4>
-                    <p>${record.description || "無訪視筆記"}</p>
+                <div class="participant-row">
+                    <div class="participant-icon"><i class="fas fa-home"></i></div>
+                    <div class="participant-label">村民:</div>
+                    <div class="participant-tags">
+                        ${record.villagers && record.villagers.length > 0 
+                            ? createParticipantTags(record.villagers, 'villager')
+                            : '<span class="no-participants">無村民參與</span>'}
+                    </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- 訪視筆記區塊 - 獨立卡片 -->
+        <div class="note-card">
+            <div class="note-header">
+                <i class="fas fa-clipboard"></i> 訪視筆記
+            </div>
+            <div class="note-content">
+                ${record.description || "無訪視筆記"}
+            </div>
+        </div>
         `;
         
         // 移除index.html中多餘的訪視筆記標籤
